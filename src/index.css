@@ -1,0 +1,76 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Sora:wght@100;200;300;400;500;600;700;800&family=JetBrains+Mono&display=swap');
+
+@theme {
+  --font-sans: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Cormorant Garamond", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-primary: #03110D;
+  --color-secondary: #16302B;
+  --color-panel: #390517;
+  --color-accent: #A38560;
+  --color-accent-hover: #A44529;
+  --color-accent-glow: rgba(163, 133, 96, 0.3);
+  
+  --color-text-pure: #E0E0E0;
+  --color-text-soft: #bdbdbd;
+  --color-text-muted: #8a8a8a;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    background-color: #03110D;
+  }
+  body {
+    @apply bg-primary text-text-pure font-sans antialiased selection:bg-accent selection:text-primary overflow-x-hidden;
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: rgba(22, 48, 43, 0.4);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(163, 133, 96, 0.1);
+  }
+  .glass-dark {
+    background: rgba(3, 17, 13, 0.7);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(163, 133, 96, 0.05);
+  }
+  .glow-sm {
+    box-shadow: 0 0 15px rgba(163, 133, 96, 0.1);
+  }
+  .glow-md {
+    box-shadow: 0 0 30px rgba(163, 133, 96, 0.2);
+  }
+  .glow-lg {
+    box-shadow: 0 0 50px rgba(163, 133, 96, 0.3);
+  }
+  .text-glow {
+    text-shadow: 0 0 10px rgba(163, 133, 96, 0.2);
+  }
+  .border-glow {
+    border-color: rgba(163, 133, 96, 0.2);
+    box-shadow: inset 0 0 10px rgba(163, 133, 96, 0.05);
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #03110D;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #16302B;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #A38560;
+}
