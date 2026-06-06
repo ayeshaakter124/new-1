@@ -11,19 +11,19 @@ const SOCIAL_PLATFORMS = [
   {
     name: 'Instagram',
     logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/instagram.svg',
-    url: 'https://www.instagram.com/mehedihasan300502?igsh=djg1dTJjZnY4ZXk0',
+    url: 'https://www.instagram.com/rehman_hridoy/',
     glow: 'rgba(163, 133, 96, 0.3)'
   },
   {
     name: 'WhatsApp',
     logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg',
-    url: 'https://wa.me/+8801404395783',
+    url: 'https://wa.me/+88015773355667',
     glow: 'rgba(163, 133, 96, 0.4)'
   },
   {
     name: 'Facebook',
     logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/facebook.svg',
-    url: 'https://www.facebook.com/share/18koB1kANc/',
+    url: 'https://www.facebook.com/HRlD0Y',
     glow: 'rgba(163, 133, 96, 0.3)'
   }
 ];
