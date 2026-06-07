@@ -2,19 +2,19 @@ import { motion } from "motion/react";
 
 const journeyData = [
   {
-    year: "2025 – Present",
-    role: "CREATIVE DIRECTOR",
-    company: "ELITE VISION STUDIOS",
-    description: "Defining the future of luxury cinematic storytelling for global fashion and tech brands, overseeing high-end visual campaigns from concept to final delivery.",
-  },
-  {
-    year: "2024 – 2025",
+    year: "Present",
     role: "SR. VIDEO EDITOR",
-    company: "VELOCITY MEDIA",
+    company: "DigiAid",
     description: "Crafting high-octane visual experiences and viral commercial content for digital-first audiences, focusing on rhythmic precision and narrative impact.",
   },
   {
-    year: "2023 – 2024",
+    year: "2025",
+    role: "CREATIVE DIRECTOR",
+    company: "D Studio",
+    description: "Defining the future of luxury cinematic storytelling for global fashion and tech brands, overseeing high-end visual campaigns from concept to final delivery.",
+  },
+  {
+    year: "2024",
     role: "MOTION DESIGNER",
     company: "LUMINA ART LAB",
     description: "Pioneering experimental visual languages through motion design and digital art installations, collaborating with international artists on immersive projects.",
