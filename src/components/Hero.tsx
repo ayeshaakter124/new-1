@@ -71,7 +71,7 @@ export default function Hero() {
               {/* Using a placeholder since image generation failed */}
               <div className="w-full h-full bg-secondary flex items-center justify-center p-8 text-center">
                  <img 
-                    src="https://images.unsplash.com/photo-1542204172-3c13994a5077?q=80&w=1000&auto=format&fit=crop" 
+                    src="https://i.postimg.cc/fbHwLp5r/645961518-17930674842197911-1278147175502371005-n.jpg" 
                     alt="Rehman Hridoy" 
                     className="w-full h-full object-cover grayscale brightness-75 hover:grayscale-0 hover:brightness-100 transition-all duration-700" 
                  />

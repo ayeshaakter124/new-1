@@ -50,8 +50,8 @@ export default function About() {
             <div className="absolute inset-0 bg-accent/20 blur-[100px] rounded-full z-0 opacity-10" />
             <div className="relative z-10 aspect-[4/5] rounded-[2rem] overflow-hidden border border-white/5 glass-dark glow-lg group">
               <img 
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop" 
-                alt="Mehedi - Creative Director" 
+                src="https://i.postimg.cc/Gh9myc6x/generated-image-65dfef69-a068-4e0e-b98a-20c347f7444b.png" 
+                alt="Rehman Hridoy - Creative Director" 
                 className="w-full h-full object-cover grayscale transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105" 
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent opacity-80" />
