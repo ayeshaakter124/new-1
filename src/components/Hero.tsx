@@ -51,7 +51,7 @@ export default function Hero() {
                 {[1, 2, 3, 4, 5].map((i) => <Star key={i} size={14} fill="currentColor" />)}
               </div>
               <p className="text-xs text-text-muted font-medium tracking-wide">
-                TRUSTED BY 183+ GLOBAL CLIENTS
+                TRUSTED BY 47+ GLOBAL CLIENTS
               </p>
             </div>
           </div>
@@ -90,7 +90,7 @@ export default function Hero() {
                 </div>
                 <div>
                   <p className="text-xs text-text-soft font-medium">Experience</p>
-                  <p className="text-lg font-bold text-text-pure">3+ YEARS</p>
+                  <p className="text-lg font-bold text-text-pure">2+ YEARS</p>
                 </div>
               </div>
             </motion.div>
@@ -106,7 +106,7 @@ export default function Hero() {
                 </div>
                 <div>
                   <p className="text-xs text-text-soft font-medium">Projects</p>
-                  <p className="text-lg font-bold text-text-pure">250+ COMPLETED</p>
+                  <p className="text-lg font-bold text-text-pure">183+ COMPLETED</p>
                 </div>
               </div>
             </motion.div>
