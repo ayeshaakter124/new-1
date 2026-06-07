@@ -11,7 +11,7 @@ const getYouTubeId = (url: string) => {
   return (match && match[2].length === 11) ? match[2] : null;
 };
 
-const categories = ["Reels", "Commercial", "YouTube", "Motion Graphics"];
+const categories = ["Reels", "Commercial", "Saas Animation", "Motion Graphics"];
 
 const projects = [
   {
@@ -33,7 +33,7 @@ const projects = [
   {
     id: 3,
     title: "Tech Unboxing",
-    category: "YouTube",
+    category: "Saas Animation",
     description: "Clean tech review for a major influencer.",
     image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=800&auto=format&fit=crop",
     youtubeUrl: "https://www.youtube.com/watch?v=F3SpxOLeq0U",
