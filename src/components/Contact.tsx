@@ -89,7 +89,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <p className="text-[7px] sm:text-[9px] text-text-muted uppercase font-bold tracking-[0.3em] mb-1">Direct Correspondence</p>
-                  <p className="text-base sm:text-xl font-display font-bold text-text-pure tracking-tight">hello@rehmanhridoy.com</p>
+                  <p className="text-base sm:text-xl font-display font-bold text-text-pure tracking-tight">hello@reehmanhridoy.com</p>
                 </div>
               </div>
               
