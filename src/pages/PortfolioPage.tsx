@@ -35,15 +35,15 @@ const videoProjects = [
   { title: "Energy Drink Sprint", category: "Commercial", description: "Fast-cut sports commercial with high intensity.", youtubeUrl: "https://www.youtube.com/watch?v=kYJvY96p3G8", duration: "0:45" },
   { title: "Apparel Winter Lookbook", category: "Commercial", description: "Outdoor lifestyle shoot for a winter clothing line.", youtubeUrl: "https://www.youtube.com/watch?v=kYJvY96p3G8", duration: "1:20" },
 
-  // YouTube (8 items)
-  { title: "Tech Review: Minimal Workspace", category: "YouTube", description: "Clean tech review for a major tech channel.", youtubeUrl: "https://www.youtube.com/watch?v=F3SpxOLeq0U", duration: "10:12" },
-  { title: "How to Edit Faster", category: "YouTube", description: "Tutorial video with screen recordings and tips.", youtubeUrl: "https://www.youtube.com/watch?v=F3SpxOLeq0U", duration: "15:40" },
-  { title: "The State of AI 2024", category: "YouTube", description: "Explainable video essay with motion graphics.", youtubeUrl: "https://www.youtube.com/watch?v=F3SpxOLeq0U", duration: "22:00" },
-  { title: "Unboxing the Future", category: "YouTube", description: "Gadget unboxing with high production value.", youtubeUrl: "https://www.youtube.com/watch?v=F3SpxOLeq0U", duration: "12:30" },
-  { title: "100 Days of Code", category: "YouTube", description: "Documentary-style vlog of a developer's journey.", youtubeUrl: "https://www.youtube.com/watch?v=F3SpxOLeq0U", duration: "18:20" },
-  { title: "Studio Tour V2", category: "YouTube", description: "Cinematographer's studio setup and gear tour.", youtubeUrl: "https://www.youtube.com/watch?v=F3SpxOLeq0U", duration: "14:15" },
-  { title: "Photography Basics", category: "YouTube", description: "Educational series for beginner photographers.", youtubeUrl: "https://www.youtube.com/watch?v=F3SpxOLeq0U", duration: "25:00" },
-  { title: "Podcast: Episode 42", category: "YouTube", description: "Multi-cam podcast production with guests.", youtubeUrl: "https://www.youtube.com/watch?v=F3SpxOLeq0U", duration: "45:00" },
+  // Saas Animation (8 items)
+  { title: "Tech Review: Minimal Workspace", category: "Saas Animation", description: "Clean tech review for a major tech channel.", youtubeUrl: "https://www.youtube.com/watch?v=F3SpxOLeq0U", duration: "10:12" },
+  { title: "How to Edit Faster", category: "Saas Animation", description: "Tutorial video with screen recordings and tips.", youtubeUrl: "https://www.youtube.com/watch?v=F3SpxOLeq0U", duration: "15:40" },
+  { title: "The State of AI 2024", category: "Saas Animation", description: "Explainable video essay with motion graphics.", youtubeUrl: "https://www.youtube.com/watch?v=F3SpxOLeq0U", duration: "22:00" },
+  { title: "Unboxing the Future", category: "Saas Animation", description: "Gadget unboxing with high production value.", youtubeUrl: "https://www.youtube.com/watch?v=F3SpxOLeq0U", duration: "12:30" },
+  { title: "100 Days of Code", category: "Saas Animation", description: "Documentary-style vlog of a developer's journey.", youtubeUrl: "https://www.youtube.com/watch?v=F3SpxOLeq0U", duration: "18:20" },
+  { title: "Studio Tour V2", category: "Saas Animation", description: "Cinematographer's studio setup and gear tour.", youtubeUrl: "https://www.youtube.com/watch?v=F3SpxOLeq0U", duration: "14:15" },
+  { title: "Photography Basics", category: "Saas Animation", description: "Educational series for beginner photographers.", youtubeUrl: "https://www.youtube.com/watch?v=F3SpxOLeq0U", duration: "25:00" },
+  { title: "Podcast: Episode 42", category: "Saas Animation", description: "Multi-cam podcast production with guests.", youtubeUrl: "https://www.youtube.com/watch?v=F3SpxOLeq0U", duration: "45:00" },
 
   // Motion Graphics (8 items)
   { title: "Cyberpunk Glitch Intro", category: "Motion Graphics", description: "Complex motion typography and futuristic aesthetic.", youtubeUrl: "https://www.youtube.com/watch?v=Yp69mPZ6mX8", duration: "0:15" },
@@ -55,14 +55,6 @@ const videoProjects = [
   { title: "Abstract Particles", category: "Motion Graphics", description: "Endless loop of procedural particle systems.", youtubeUrl: "https://www.youtube.com/watch?v=Yp69mPZ6mX8", duration: "0:12" },
   { title: "Character Walk Cycle", category: "Motion Graphics", description: "Stylized 2D character animation for a startup.", youtubeUrl: "https://www.youtube.com/watch?v=Yp69mPZ6mX8", duration: "0:05" },
 
-  // Music Video (6 items)
-  { title: "Music Video: Night Visions", category: "Music Video", description: "Atmospheric color grading for an indie artist.", youtubeUrl: "https://www.youtube.com/watch?v=JGwWNGJdvx8", duration: "3:50" },
-  { title: "Underground Bass", category: "Music Video", description: "High-energy club video with strobe effects.", youtubeUrl: "https://www.youtube.com/watch?v=JGwWNGJdvx8", duration: "4:20" },
-  { title: "Acoustic Sessions", category: "Music Video", description: "Intimate one-shot performance in a forest.", youtubeUrl: "https://www.youtube.com/watch?v=JGwWNGJdvx8", duration: "5:10" },
-  { title: "Synthwave Dreams", category: "Music Video", description: "Retro aesthetic with heavy lens flares.", youtubeUrl: "https://www.youtube.com/watch?v=JGwWNGJdvx8", duration: "3:30" },
-  { title: "The Jazz Loft", category: "Music Video", description: "Classy black and white edit with film grain.", youtubeUrl: "https://www.youtube.com/watch?v=JGwWNGJdvx8", duration: "6:00" },
-  { title: "Pop Anthem 2025", category: "Music Video", description: "Bright colorful production for a chart-topper.", youtubeUrl: "https://www.youtube.com/watch?v=JGwWNGJdvx8", duration: "3:15" },
-
   // Documentary (6 items)
   { title: "Documentary: The Artisan", category: "Documentary", description: "Story highlighting the craftsmanship of a luthier.", youtubeUrl: "https://www.youtube.com/watch?v=BvXGPhE-Tto", duration: "5:20" },
   { title: "Wildlife Chronicles", category: "Documentary", description: "Short film about local urban nature.", youtubeUrl: "https://www.youtube.com/watch?v=BvXGPhE-Tto", duration: "8:45" },
@@ -72,7 +64,7 @@ const videoProjects = [
   { title: "Forgotten Echoes", category: "Documentary", description: "Historical perspective on abandoned silos.", youtubeUrl: "https://www.youtube.com/watch?v=BvXGPhE-Tto", duration: "7:15" },
 ];
 
-const categories = ["Reels", "Commercial", "YouTube", "Documentary", "Music Video", "Motion Graphics", "Ads"];
+const categories = ["Reels", "Commercial", "Saas Animation", "Documentary", "Motion Graphics"];
 
 export default function PortfolioPage() {
   const [activeCategory, setActiveCategory] = useState("Reels");
