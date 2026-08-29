@@ -20,11 +20,17 @@ const DEFAULT_CLOUD_CONFIG: CloudConfig = {
   autoSync: true,
 };
 
+const cleanUrl = (raw?: string) => {
+  if (!raw) return "";
+  return raw.trim().replace(/\/rest\/v1\/?$/, "").replace(/\/$/, "");
+};
+
 export const cloudStore = {
   getConfig(): CloudConfig {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.CLOUD_CONFIG);
-      return saved ? { ...DEFAULT_CLOUD_CONFIG, ...JSON.parse(saved) } : DEFAULT_CLOUD_CONFIG;
+      const conf = saved ? { ...DEFAULT_CLOUD_CONFIG, ...JSON.parse(saved) } : DEFAULT_CLOUD_CONFIG;
+      return { ...conf, supabaseUrl: cleanUrl(conf.supabaseUrl) };
     } catch {
       return DEFAULT_CLOUD_CONFIG;
     }
@@ -32,7 +38,12 @@ export const cloudStore = {
 
   saveConfig(config: Partial<CloudConfig>): CloudConfig {
     const current = this.getConfig();
-    const updated = { ...current, ...config };
+    const updated = { 
+      ...current, 
+      ...config,
+      supabaseUrl: config.supabaseUrl !== undefined ? cleanUrl(config.supabaseUrl) : current.supabaseUrl,
+      supabaseAnonKey: config.supabaseAnonKey !== undefined ? config.supabaseAnonKey.trim() : current.supabaseAnonKey,
+    };
     localStorage.setItem(STORAGE_KEYS.CLOUD_CONFIG, JSON.stringify(updated));
     window.dispatchEvent(new Event("rh_cloud_config_updated"));
     return updated;
@@ -44,8 +55,8 @@ export const cloudStore = {
   },
 
   async testConnection(url?: string, key?: string): Promise<{ success: boolean; message: string }> {
-    const testUrl = (url || this.getConfig().supabaseUrl).replace(/\/$/, "");
-    const testKey = key || this.getConfig().supabaseAnonKey;
+    const testUrl = cleanUrl(url || this.getConfig().supabaseUrl);
+    const testKey = (key || this.getConfig().supabaseAnonKey).trim();
 
     if (!testUrl || !testKey) {
       return { success: false, message: "Please provide both Supabase URL and Anon Key." };

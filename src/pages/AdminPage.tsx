@@ -280,14 +280,18 @@ export default function AdminPage() {
   };
 
   const handleTestCloudConnection = async () => {
+    const saved = cloudStore.saveConfig(cloudConfig);
+    setCloudConfig(saved);
     setIsTestingCloud(true);
     setTestCloudResult(null);
-    const res = await cloudStore.testConnection(cloudConfig.supabaseUrl, cloudConfig.supabaseAnonKey);
+    const res = await cloudStore.testConnection(saved.supabaseUrl, saved.supabaseAnonKey);
     setIsTestingCloud(false);
     setTestCloudResult(res);
   };
 
   const handlePushAllToCloud = async () => {
+    const saved = cloudStore.saveConfig(cloudConfig);
+    setCloudConfig(saved);
     setIsSyncingCloud(true);
     setSyncCloudMsg("");
     const res = await dataStore.syncAllToCloud();
