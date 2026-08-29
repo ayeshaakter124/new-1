@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script>
+      // Prevent TypeError: Cannot set property fetch of #<Window> which has only a getter
+      // in sandboxed iframe environments when third-party scripts try to wrap fetch.
+      (function() {
+        try {
+          var originalFetch = window.fetch;
+          var customFetch = originalFetch;
+          Object.defineProperty(window, 'fetch', {
+            get: function() {
+              return customFetch;
+            },
+            set: function(val) {
+              customFetch = val;
+            },
+            configurable: true,
+            enumerable: true
+          });
+        } catch (e) {
+          console.warn('Could not redefine window.fetch:', e);
+        }
+      })();
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rehman Hridoy | Sr. Video Editor & Creative Director</title>
+    
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Rehman Hridoy | Sr. Video Editor & Creative Director" />
+    <meta name="description" content="Official portfolio of Rehman Hridoy - Senior Video Editor and Creative Director crafting cinematic commercials, viral reels, SaaS motion graphics, and high-retention visual stories." />
+    <meta name="keywords" content="Rehman Hridoy, Video Editor, Creative Director, Motion Graphics, Premiere Pro, After Effects, DaVinci Resolve, Reels Editor, Commercial Video Editor" />
+    <meta name="author" content="Rehman Hridoy" />
+    <meta name="theme-color" content="#03110D" />
+
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rehmanhridoy.com/" />
+    <meta property="og:title" content="Rehman Hridoy | Sr. Video Editor & Creative Director" />
+    <meta property="og:description" content="Crafting high-octane cinematic visuals, commercial ads, and high-retention video content for global brands." />
+    <meta property="og:image" content="https://i.postimg.cc/Jhk9tDLk/719740580-17944414278197911-396331610824847627-n.jpg" />
+    <meta property="og:site_name" content="Rehman Hridoy Portfolio" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="Rehman Hridoy | Sr. Video Editor & Creative Director" />
+    <meta property="twitter:description" content="Crafting high-octane cinematic visuals, commercial ads, and high-retention video content for global brands." />
+    <meta property="twitter:image" content="https://i.postimg.cc/Jhk9tDLk/719740580-17944414278197911-396331610824847627-n.jpg" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23A38560'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E" />
+  </head>
+  <body class="bg-[#03110D] text-[#E0E0E0]">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
