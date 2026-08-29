@@ -1,3 +1,5 @@
+import { cloudStore } from "./cloudStore";
+
 export interface Project {
   id: number | string;
   title: string;
@@ -300,12 +302,14 @@ export const dataStore = {
     }
     localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(projects));
     notifyUpdate();
+    cloudStore.syncKey("projects", projects);
     return projects;
   },
   deleteProject(id: number | string): Project[] {
     const projects = this.getProjects().filter(p => p.id !== id);
     localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(projects));
     notifyUpdate();
+    cloudStore.syncKey("projects", projects);
     return projects;
   },
 
@@ -339,12 +343,14 @@ export const dataStore = {
     }
     localStorage.setItem(STORAGE_KEYS.JOURNEY, JSON.stringify(list));
     notifyUpdate();
+    cloudStore.syncKey("journey", list);
     return list;
   },
   deleteJourneyItem(id: number | string): JourneyItem[] {
     const list = this.getJourney().filter(j => j.id !== id);
     localStorage.setItem(STORAGE_KEYS.JOURNEY, JSON.stringify(list));
     notifyUpdate();
+    cloudStore.syncKey("journey", list);
     return list;
   },
 
@@ -380,12 +386,14 @@ export const dataStore = {
     }
     localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(reviews));
     notifyUpdate();
+    cloudStore.syncKey("reviews", reviews);
     return reviews;
   },
   deleteReview(id: number | string): ClientReview[] {
     const reviews = this.getReviews().filter(r => r.id !== id);
     localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(reviews));
     notifyUpdate();
+    cloudStore.syncKey("reviews", reviews);
     return reviews;
   },
 
@@ -409,18 +417,21 @@ export const dataStore = {
     messages.unshift(newMsg);
     localStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify(messages));
     notifyUpdate();
+    cloudStore.syncKey("messages", messages);
     return newMsg;
   },
   markMessageRead(id: string): ContactMessage[] {
     const messages = this.getMessages().map(m => m.id === id ? { ...m, read: true } : m);
     localStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify(messages));
     notifyUpdate();
+    cloudStore.syncKey("messages", messages);
     return messages;
   },
   deleteMessage(id: string): ContactMessage[] {
     const messages = this.getMessages().filter(m => m.id !== id);
     localStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify(messages));
     notifyUpdate();
+    cloudStore.syncKey("messages", messages);
     return messages;
   },
 
@@ -438,7 +449,41 @@ export const dataStore = {
     const updated = { ...current, ...settings };
     localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(updated));
     notifyUpdate();
+    cloudStore.syncKey("settings", updated);
     return updated;
+  },
+
+  // Cloud Load & Full Sync
+  async loadFromCloud(): Promise<boolean> {
+    const bundle = await cloudStore.fetchAllRemote();
+    if (!bundle) return false;
+    if (bundle.projects && Array.isArray(bundle.projects)) {
+      localStorage.setItem(STORAGE_KEYS.PROJECTS, JSON.stringify(bundle.projects));
+    }
+    if (bundle.journey && Array.isArray(bundle.journey)) {
+      localStorage.setItem(STORAGE_KEYS.JOURNEY, JSON.stringify(bundle.journey));
+    }
+    if (bundle.reviews && Array.isArray(bundle.reviews)) {
+      localStorage.setItem(STORAGE_KEYS.REVIEWS, JSON.stringify(bundle.reviews));
+    }
+    if (bundle.messages && Array.isArray(bundle.messages)) {
+      localStorage.setItem(STORAGE_KEYS.MESSAGES, JSON.stringify(bundle.messages));
+    }
+    if (bundle.settings && typeof bundle.settings === "object") {
+      localStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(bundle.settings));
+    }
+    notifyUpdate();
+    return true;
+  },
+
+  async syncAllToCloud() {
+    return cloudStore.pushAllLocal({
+      projects: this.getProjects(),
+      journey: this.getJourney(),
+      reviews: this.getReviews(),
+      messages: this.getMessages(),
+      settings: this.getSettings(),
+    });
   },
 
   // Password

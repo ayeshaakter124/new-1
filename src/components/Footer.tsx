@@ -38,7 +38,6 @@ export default function Footer() {
             <Link to="/work" className="hover:text-accent transition-all duration-300">Showcase</Link>
             <Link to="/#about" className="hover:text-accent transition-all duration-300">The Vision</Link>
             <Link to="/#contact" className="hover:text-accent transition-all duration-300">Connection</Link>
-            <Link to="/admin" className="text-accent/80 hover:text-accent transition-all duration-300 flex items-center gap-1">⚙️ Admin</Link>
           </div>
         </div>
 

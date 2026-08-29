@@ -9,6 +9,11 @@ import {
   JourneyItem
 } from "../lib/dataStore";
 import { 
+  cloudStore, 
+  CloudConfig, 
+  SUPABASE_SQL_SETUP 
+} from "../lib/cloudStore";
+import { 
   LayoutDashboard, 
   Film, 
   MessageSquare, 
@@ -32,7 +37,13 @@ import {
   Mail,
   Phone,
   Play,
-  Briefcase
+  Briefcase,
+  Database,
+  Globe,
+  Copy,
+  Check,
+  Cloud,
+  CloudOff
 } from "lucide-react";
 
 // Helper to extract YouTube ID
@@ -79,6 +90,14 @@ export default function AdminPage() {
   const [newPassword, setNewPassword] = useState("");
   const [passSuccessMsg, setPassSuccessMsg] = useState("");
 
+  // Cloud Database Sync State
+  const [cloudConfig, setCloudConfig] = useState<CloudConfig>(() => cloudStore.getConfig());
+  const [testCloudResult, setTestCloudResult] = useState<{ success?: boolean; message: string } | null>(null);
+  const [isTestingCloud, setIsTestingCloud] = useState(false);
+  const [isSyncingCloud, setIsSyncingCloud] = useState(false);
+  const [syncCloudMsg, setSyncCloudMsg] = useState("");
+  const [copiedSql, setCopiedSql] = useState(false);
+
   // Check auth session
   useEffect(() => {
     const sessionAuth = sessionStorage.getItem("rh_admin_authenticated");
@@ -109,18 +128,12 @@ export default function AdminPage() {
     e.preventDefault();
     const correctPass = dataStore.getAdminPassword() || "halima123";
     const entered = passwordInput.trim();
-    if (
-      entered === correctPass ||
-      entered.toLowerCase() === correctPass.toLowerCase() ||
-      entered.toLowerCase() === "halima123" ||
-      entered.toLowerCase() === "admin123" ||
-      entered.toLowerCase() === "admin"
-    ) {
+    if (entered === correctPass || entered.toLowerCase() === correctPass.toLowerCase()) {
       sessionStorage.setItem("rh_admin_authenticated", "true");
       setIsAuthenticated(true);
       setAuthError("");
     } else {
-      setAuthError("Incorrect password. (Default is halima123)");
+      setAuthError("Access Denied: Incorrect Secret Key.");
     }
   };
 
@@ -259,6 +272,51 @@ export default function AdminPage() {
     setTimeout(() => setPassSuccessMsg(""), 4000);
   };
 
+  // --- Cloud Database Handlers ---
+  const handleSaveCloudConfig = (e: FormEvent) => {
+    e.preventDefault();
+    cloudStore.saveConfig(cloudConfig);
+    alert("Cloud Database configuration saved!");
+  };
+
+  const handleTestCloudConnection = async () => {
+    setIsTestingCloud(true);
+    setTestCloudResult(null);
+    const res = await cloudStore.testConnection(cloudConfig.supabaseUrl, cloudConfig.supabaseAnonKey);
+    setIsTestingCloud(false);
+    setTestCloudResult(res);
+  };
+
+  const handlePushAllToCloud = async () => {
+    setIsSyncingCloud(true);
+    setSyncCloudMsg("");
+    const res = await dataStore.syncAllToCloud();
+    setIsSyncingCloud(false);
+    setSyncCloudMsg(res.message);
+    if (res.success) {
+      setCloudConfig(cloudStore.getConfig());
+    }
+  };
+
+  const handlePullFromCloud = async () => {
+    setIsSyncingCloud(true);
+    setSyncCloudMsg("");
+    const ok = await dataStore.loadFromCloud();
+    setIsSyncingCloud(false);
+    if (ok) {
+      loadAllData();
+      setSyncCloudMsg("Successfully loaded fresh live data from Cloud Database! 🟢");
+    } else {
+      setSyncCloudMsg("Failed to load from Cloud Database. Check credentials.");
+    }
+  };
+
+  const handleCopySql = () => {
+    navigator.clipboard.writeText(SUPABASE_SQL_SETUP);
+    setCopiedSql(true);
+    setTimeout(() => setCopiedSql(false), 3000);
+  };
+
   const handleExportData = () => {
     const fullData = {
       projects: dataStore.getProjects(),
@@ -349,26 +407,10 @@ export default function AdminPage() {
             >
               Unlock Dashboard
             </button>
-
-            <button
-              type="button"
-              onClick={() => {
-                dataStore.setAdminPassword("halima123");
-                sessionStorage.setItem("rh_admin_authenticated", "true");
-                setIsAuthenticated(true);
-                setAuthError("");
-              }}
-              className="w-full py-3 bg-white/5 hover:bg-white/10 text-accent font-bold rounded-xl text-xs border border-accent/20 transition-all flex items-center justify-center gap-2"
-            >
-              ⚡ 1-Click Unlock (halima123)
-            </button>
           </form>
 
-          <div className="mt-8 pt-6 border-t border-white/5 text-center space-y-2">
-            <p className="text-[10px] text-text-muted">
-              Default Password: <span className="text-accent font-mono font-bold">halima123</span>
-            </p>
-            <Link to="/" className="inline-flex items-center gap-2 text-xs text-text-soft hover:text-accent pt-2 transition-colors">
+          <div className="mt-8 pt-6 border-t border-white/5 text-center">
+            <Link to="/" className="inline-flex items-center gap-2 text-xs text-text-soft hover:text-accent transition-colors">
               <ArrowLeft size={14} /> Back to Live Website
             </Link>
           </div>
@@ -1039,6 +1081,145 @@ export default function AdminPage() {
                 Save Site Settings
               </button>
             </form>
+
+            {/* --- GLOBAL CLOUD DATABASE (SUPABASE) CARD --- */}
+            <div className="bg-secondary/40 p-8 rounded-2xl border border-accent/30 space-y-6 relative overflow-hidden">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center text-accent">
+                    <Database size={20} />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-display font-bold text-text-pure flex items-center gap-2">
+                      Global Cloud Database Sync (Supabase)
+                    </h3>
+                    <p className="text-xs text-text-muted">Sync changes worldwide so all visitors on any device see your live updates in real time.</p>
+                  </div>
+                </div>
+
+                <div className="shrink-0">
+                  {cloudStore.isConfigured() ? (
+                    <span className="px-3 py-1.5 bg-green-500/10 border border-green-500/30 text-green-400 rounded-full text-xs font-bold flex items-center gap-1.5">
+                      <Cloud size={14} /> Cloud Sync Active
+                    </span>
+                  ) : (
+                    <span className="px-3 py-1.5 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 rounded-full text-xs font-bold flex items-center gap-1.5">
+                      <CloudOff size={14} /> Local Storage Mode
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              {/* Cloud Config Form */}
+              <form onSubmit={handleSaveCloudConfig} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-[10px] font-bold text-accent uppercase tracking-widest block mb-1.5">
+                      Supabase Project URL
+                    </label>
+                    <input 
+                      type="text" 
+                      placeholder="https://xyzproject.supabase.co"
+                      value={cloudConfig.supabaseUrl}
+                      onChange={(e) => setCloudConfig({ ...cloudConfig, supabaseUrl: e.target.value.trim() })}
+                      className="w-full bg-primary/60 border border-white/10 rounded-xl px-4 py-3 text-xs text-text-pure"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-[10px] font-bold text-accent uppercase tracking-widest block mb-1.5">
+                      Supabase Anon (Public) Key
+                    </label>
+                    <input 
+                      type="password" 
+                      placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..."
+                      value={cloudConfig.supabaseAnonKey}
+                      onChange={(e) => setCloudConfig({ ...cloudConfig, supabaseAnonKey: e.target.value.trim() })}
+                      className="w-full bg-primary/60 border border-white/10 rounded-xl px-4 py-3 text-xs text-text-pure"
+                    />
+                  </div>
+                </div>
+
+                {/* Cloud Action Buttons */}
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <button
+                    type="submit"
+                    className="px-5 py-2.5 bg-accent text-primary font-bold rounded-xl text-xs uppercase tracking-wider glow-sm hover:glow-md transition-all"
+                  >
+                    Save Cloud Credentials
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handleTestCloudConnection}
+                    disabled={isTestingCloud}
+                    className="px-4 py-2.5 bg-white/10 hover:bg-white/20 text-text-pure font-bold rounded-xl text-xs flex items-center gap-1.5 transition-all"
+                  >
+                    <RefreshCw size={14} className={isTestingCloud ? "animate-spin" : ""} />
+                    {isTestingCloud ? "Testing..." : "Test Cloud Connection"}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handlePushAllToCloud}
+                    disabled={isSyncingCloud}
+                    className="px-4 py-2.5 bg-green-600/20 hover:bg-green-600/30 text-green-400 font-bold rounded-xl text-xs flex items-center gap-1.5 transition-all"
+                  >
+                    <Upload size={14} />
+                    {isSyncingCloud ? "Syncing..." : "Push All Data to Cloud DB"}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={handlePullFromCloud}
+                    disabled={isSyncingCloud}
+                    className="px-4 py-2.5 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 font-bold rounded-xl text-xs flex items-center gap-1.5 transition-all"
+                  >
+                    <Download size={14} />
+                    Pull Data from Cloud
+                  </button>
+                </div>
+              </form>
+
+              {/* Status Message Display */}
+              {testCloudResult && (
+                <div className={`p-4 rounded-xl text-xs font-semibold border ${
+                  testCloudResult.success 
+                    ? "bg-green-500/10 text-green-400 border-green-500/30" 
+                    : "bg-red-500/10 text-red-400 border-red-500/30"
+                }`}>
+                  {testCloudResult.message}
+                </div>
+              )}
+
+              {syncCloudMsg && (
+                <div className="p-4 rounded-xl text-xs font-semibold bg-accent/10 text-accent border border-accent/20">
+                  {syncCloudMsg}
+                </div>
+              )}
+
+              {/* 2-Minute Quick Setup Guide & SQL */}
+              <div className="p-5 bg-primary/60 rounded-xl border border-white/5 space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-text-pure">📖 2-Minute Free Supabase Setup Guide:</span>
+                  <button
+                    type="button"
+                    onClick={handleCopySql}
+                    className="px-3 py-1.5 bg-accent/20 hover:bg-accent/30 text-accent rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all"
+                  >
+                    {copiedSql ? <Check size={12} /> : <Copy size={12} />}
+                    {copiedSql ? "SQL Copied!" : "Copy Supabase SQL Script"}
+                  </button>
+                </div>
+
+                <ol className="text-xs text-text-soft space-y-1.5 list-decimal list-inside leading-relaxed">
+                  <li>Go to <a href="https://supabase.com" target="_blank" rel="noreferrer" className="text-accent underline font-bold">supabase.com</a> and sign up for free (takes 1 minute).</li>
+                  <li>Click <strong>New Project</strong> and enter a project name (e.g. <code>rehman-portfolio</code>).</li>
+                  <li>In your Supabase dashboard, click <strong>SQL Editor</strong> on the left menu, paste the copied SQL script above, and click <strong>Run</strong>.</li>
+                  <li>Go to <strong>Project Settings ➔ API</strong>, copy the <code>Project URL</code> and <code>anon public key</code>, paste them above, and click <strong>Save & Push All Data</strong>!</li>
+                </ol>
+              </div>
+            </div>
 
             {/* Change Admin Password */}
             <form onSubmit={handleChangePassword} className="bg-secondary/40 p-8 rounded-2xl border border-white/10 space-y-4">

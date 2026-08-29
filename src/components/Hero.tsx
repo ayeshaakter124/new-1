@@ -71,24 +71,28 @@ export default function Hero() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
-          animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          initial={{ opacity: 0, scale: 0.95, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="relative"
         >
           {/* Main Hero Image Container */}
           <div className="relative aspect-[4/5] max-w-md mx-auto">
-            <div className="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent z-10" />
-            <div className="absolute -inset-4 bg-accent/10 blur-3xl rounded-full z-0 animate-pulse" />
-            <div className="relative z-10 w-full h-full rounded-[40px] overflow-hidden border border-white/10 glass-dark">
+            {/* Ambient Backlight Glows */}
+            <div className="absolute -inset-4 bg-gradient-to-tr from-accent/20 via-panel/20 to-transparent blur-3xl rounded-[48px] z-0 pointer-events-none" />
+            <div className="absolute inset-0 bg-secondary/80 rounded-[36px] sm:rounded-[44px] z-0 border border-accent/20 shadow-2xl" />
+
+            {/* Inner Image Frame */}
+            <div className="relative z-10 w-full h-full rounded-[36px] sm:rounded-[44px] overflow-hidden border border-white/10 glass-dark bg-secondary/90 flex items-center justify-center">
               <img 
-                 src={heroPortrait || "https://i.postimg.cc/Jhk9tDLk/719740580-17944414278197911-396331610824847627-n.jpg"} 
+                 src={heroPortrait || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000&auto=format&fit=crop"} 
                  onError={(e) => {
-                   (e.target as HTMLImageElement).src = "https://i.postimg.cc/Jhk9tDLk/719740580-17944414278197911-396331610824847627-n.jpg";
+                   (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000&auto=format&fit=crop";
                  }}
                  alt="Rehman Hridoy" 
-                 className="w-full h-full object-cover object-center transition-all duration-700 hover:scale-105" 
+                 className="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-105 select-none" 
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent pointer-events-none" />
             </div>
             
             {/* Floating Stats */}

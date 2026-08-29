@@ -6,6 +6,7 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { dataStore } from "./lib/dataStore";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Services from "./components/Services";
@@ -17,6 +18,15 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import PortfolioPage from "./pages/PortfolioPage";
 import AdminPage from "./pages/AdminPage";
+
+function CloudDataLoader() {
+  useEffect(() => {
+    // Initial global fetch from Cloud Database
+    dataStore.loadFromCloud();
+  }, []);
+
+  return null;
+}
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -109,6 +119,7 @@ function MainLayout() {
 
   return (
     <div className="bg-primary text-text-pure min-h-screen selection:bg-accent selection:text-primary">
+      <CloudDataLoader />
       <ScrollToTop />
       {!isAdmin && <Navbar />}
       
