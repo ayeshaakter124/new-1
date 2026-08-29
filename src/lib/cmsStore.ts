@@ -641,13 +641,13 @@ export const DEFAULT_CMS_STATE: CMSState = {
   sections: [
     { id: "hero", name: "Hero / Introduction", visible: true, order: 1 },
     { id: "portfolio", name: "Portfolio Showcase", visible: true, order: 2 },
-    { id: "services", name: "Client Video Reviews & Services", visible: true, order: 3 },
+    { id: "services", name: "Client Video Reviews", visible: true, order: 3 },
     { id: "whyHire", name: "Why Hire Me / Key Stats", visible: true, order: 4 },
     { id: "journey", name: "Career Journey Timeline", visible: true, order: 5 },
-    { id: "brands", name: "Tools & Platforms", visible: true, order: 6 },
-    { id: "about", name: "About Me & Narrative", visible: true, order: 7 },
-    { id: "testimonials", name: "Client Testimonials", visible: true, order: 8 },
-    { id: "contact", name: "Contact & Connection", visible: true, order: 9 },
+    { id: "about", name: "About Me & Narrative", visible: true, order: 6 },
+    { id: "contact", name: "Contact & Connection", visible: true, order: 7 },
+    { id: "brands", name: "Tools & Platforms", visible: false, order: 8 },
+    { id: "testimonials", name: "Client Testimonials", visible: false, order: 9 },
   ],
 
   seo: {
