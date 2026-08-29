@@ -119,26 +119,18 @@ export const cloudStore = {
     }
   },
 
-  async pushAllLocal(data: {
-    projects: any[];
-    journey: any[];
-    reviews: any[];
-    messages: any[];
-    settings: any;
-  }): Promise<{ success: boolean; message: string }> {
+  async pushAllLocal(data: Record<string, any>): Promise<{ success: boolean; message: string }> {
     const config = this.getConfig();
     if (!config.supabaseUrl || !config.supabaseAnonKey) {
       return { success: false, message: "Cloud Database credentials are not configured yet." };
     }
 
     const baseUrl = config.supabaseUrl.replace(/\/$/, "");
-    const records = [
-      { id: "projects", data: data.projects, updated_at: new Date().toISOString() },
-      { id: "journey", data: data.journey, updated_at: new Date().toISOString() },
-      { id: "reviews", data: data.reviews, updated_at: new Date().toISOString() },
-      { id: "messages", data: data.messages, updated_at: new Date().toISOString() },
-      { id: "settings", data: data.settings, updated_at: new Date().toISOString() },
-    ];
+    const records = Object.entries(data).map(([key, val]) => ({
+      id: key,
+      data: val,
+      updated_at: new Date().toISOString(),
+    }));
 
     try {
       const res = await fetch(`${baseUrl}/rest/v1/portfolio_data`, {

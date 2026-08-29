@@ -1,51 +1,94 @@
 import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { Link } from "react-router-dom";
-import { Play, ChevronRight, Star, Users, Award } from "lucide-react";
+import { Play, ChevronRight, Star, Users, Award, Sparkles } from "lucide-react";
 import heroPortrait from "../assets/images/user_hero_portrait.jpg";
-import { dataStore, ProfileSettings } from "../lib/dataStore";
+import { cmsStore } from "../lib/cmsStore";
+import { ProfileHeroData, WebsiteContent, StatItem } from "../lib/cmsTypes";
 
 export default function Hero() {
-  const [settings, setSettings] = useState<ProfileSettings>(() => dataStore.getSettings());
+  const [profile, setProfile] = useState<ProfileHeroData>(() => cmsStore.getProfile());
+  const [content, setContent] = useState<WebsiteContent>(() => cmsStore.getContent());
+  const [stats, setStats] = useState<StatItem[]>(() => cmsStore.getStats());
 
   useEffect(() => {
     const handleUpdate = () => {
-      setSettings(dataStore.getSettings());
+      setProfile(cmsStore.getProfile());
+      setContent(cmsStore.getContent());
+      setStats(cmsStore.getStats());
     };
+    window.addEventListener("cms_data_updated", handleUpdate);
     window.addEventListener("rh_data_updated", handleUpdate);
-    return () => window.removeEventListener("rh_data_updated", handleUpdate);
+    return () => {
+      window.removeEventListener("cms_data_updated", handleUpdate);
+      window.removeEventListener("rh_data_updated", handleUpdate);
+    };
   }, []);
 
+  const yearsExp = stats.find(s => s.label.toLowerCase().includes("year"))?.value || "2+";
+  const projectsCount = stats.find(s => s.label.toLowerCase().includes("project"))?.value || "183+";
+  const happyClientsCount = stats.find(s => s.label.toLowerCase().includes("client"))?.value || "47+";
+
+  const displayPortrait = profile.portraitUrl && profile.portraitUrl.trim() !== "" 
+    ? profile.portraitUrl 
+    : heroPortrait;
+
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden bg-primary">
+    <section id="home" className="relative min-h-screen flex items-center justify-center pt-24 pb-12 overflow-hidden bg-primary">
       {/* Ambient Burgundy Glow */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-panel/10 rounded-full blur-[150px] pointer-events-none" />
       {/* Background Gold Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 rounded-full blur-[180px] pointer-events-none" />
       
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center relative z-10">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
         <motion.div
           initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-medium leading-[0.9] sm:leading-[0.85] mb-6 sm:mb-8 tracking-tighter text-text-pure">
-            Creative <span className="text-transparent bg-clip-text bg-gradient-to-r from-text-pure via-text-pure to-accent font-light">Visuals</span> <br />
-            for Modern <br />
-            Brands
+          {/* Availability & Title Tag */}
+          <div className="flex flex-wrap items-center gap-3 mb-6">
+            <span className="px-3.5 py-1.5 rounded-full bg-accent/15 border border-accent/30 text-accent text-[9px] sm:text-[10px] font-bold tracking-[0.2em] uppercase font-mono">
+              {profile.primaryTitle || content.heroTaglineBadge}
+            </span>
+
+            {profile.availableForWork && (
+              <span className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-400 text-[9px] font-bold uppercase tracking-wider flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" /> Available for Projects
+              </span>
+            )}
+          </div>
+
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-medium leading-[0.9] sm:leading-[0.85] mb-6 sm:mb-8 tracking-tighter text-text-pure">
+            {content.heroHeadingLine1 || "Creative"}{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-text-pure via-text-pure to-accent font-light">
+              {content.heroHeadingLine2 || "Visuals"}
+            </span> <br />
+            {content.heroHeadingLine3 || "for Modern Brands"}
           </h1>
           
           <p className="text-xs sm:text-base md:text-lg text-text-soft mb-8 sm:mb-12 max-w-xl leading-relaxed font-light">
-            I transform complex concepts into clean and compelling visuals, which make brands more engaging and credible. My visual content is designed to capture attention, build trust, and give your brand a special status.
+            {profile.shortBio || content.heroDescription}
           </p>
           
           <div className="flex flex-wrap gap-3 sm:gap-4">
-            <Link to="/#contact" className="group relative bg-accent hover:bg-accent-hover text-primary font-bold px-5 py-3 md:px-8 md:py-4 rounded-full transition-all duration-300 flex items-center gap-2 overflow-hidden glow-md">
-              <span className="z-10 uppercase tracking-widest text-[9px] md:text-[10px]">Hire Me Now</span>
+            <Link
+              to={profile.ctaPrimaryUrl || "/#contact"}
+              className="group relative bg-accent hover:bg-accent-hover text-primary font-bold px-6 py-3.5 md:px-8 md:py-4 rounded-full transition-all duration-300 flex items-center gap-2 overflow-hidden glow-md"
+            >
+              <span className="z-10 uppercase tracking-widest text-[9px] md:text-[10px]">
+                {profile.ctaPrimaryText || "Hire Me Now"}
+              </span>
               <ChevronRight className="z-10 w-3.5 h-3.5 md:w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
-            <Link to="/work" className="glass hover:bg-white/10 text-text-pure font-bold px-5 py-3 md:px-8 md:py-4 rounded-full transition-all duration-300 flex items-center gap-2 border border-accent/20">
-              <span className="uppercase tracking-widest text-[9px] md:text-[10px]">View My Work</span>
+
+            <Link
+              to={profile.ctaSecondaryUrl || "/work"}
+              className="glass hover:bg-white/10 text-text-pure font-bold px-6 py-3.5 md:px-8 md:py-4 rounded-full transition-all duration-300 flex items-center gap-2 border border-accent/20"
+            >
+              <span className="uppercase tracking-widest text-[9px] md:text-[10px]">
+                {profile.ctaSecondaryText || "View My Work"}
+              </span>
               <Play className="w-3 h-3 md:w-3.5 md:h-3.5 fill-text-pure" />
             </Link>
           </div>
@@ -64,7 +107,7 @@ export default function Hero() {
                 {[1, 2, 3, 4, 5].map((i) => <Star key={i} size={14} fill="currentColor" />)}
               </div>
               <p className="text-xs text-text-muted font-medium tracking-wide uppercase">
-                TRUSTED BY {settings.happyClients || "47+"} GLOBAL CLIENTS
+                {content.heroSocialProofText || `TRUSTED BY ${happyClientsCount} GLOBAL CLIENTS`}
               </p>
             </div>
           </div>
@@ -85,9 +128,12 @@ export default function Hero() {
             {/* Inner Image Frame */}
             <div className="relative z-10 w-full h-full rounded-[36px] sm:rounded-[44px] overflow-hidden border border-white/10 glass-dark bg-secondary/90 flex items-center justify-center">
               <img 
-                 src={heroPortrait} 
-                 alt="Rehman Hridoy" 
+                 src={displayPortrait} 
+                 alt={profile.name || "Rehman Hridoy"} 
                  className="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-105 select-none" 
+                 onError={(e) => {
+                   (e.target as HTMLImageElement).src = heroPortrait;
+                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent pointer-events-none" />
             </div>
@@ -104,7 +150,7 @@ export default function Hero() {
                 </div>
                 <div>
                   <p className="text-xs text-text-soft font-medium">Experience</p>
-                  <p className="text-lg font-bold text-text-pure uppercase">{settings.yearsExperience || "2+"} YEARS</p>
+                  <p className="text-lg font-bold text-text-pure uppercase">{yearsExp} YEARS</p>
                 </div>
               </div>
             </motion.div>
@@ -120,7 +166,7 @@ export default function Hero() {
                 </div>
                 <div>
                   <p className="text-xs text-text-soft font-medium">Projects</p>
-                  <p className="text-lg font-bold text-text-pure uppercase">{settings.projectsCompleted || "183+"} COMPLETED</p>
+                  <p className="text-lg font-bold text-text-pure uppercase">{projectsCount} COMPLETED</p>
                 </div>
               </div>
             </motion.div>

@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from "motion/react";
 import { Link } from "react-router-dom";
 import { Play, ArrowRight } from "lucide-react";
 import VideoModal from "./VideoModal";
-import { dataStore, Project } from "../lib/dataStore";
+import { cmsStore } from "../lib/cmsStore";
+import { ProjectItem, WebsiteContent } from "../lib/cmsTypes";
 
 // Helper to extract YouTube ID
 const getYouTubeId = (url: string) => {
@@ -17,14 +18,22 @@ const categories = ["Reels", "Commercial", "Saas Animation", "Motion Graphics"];
 export default function Portfolio() {
   const [activeTab, setActiveTab] = useState("Reels");
   const [selectedVideo, setSelectedVideo] = useState<{ id: string, title: string } | null>(null);
-  const [projectsList, setProjectsList] = useState<Project[]>(() => dataStore.getProjects());
+  const [projectsList, setProjectsList] = useState<ProjectItem[]>(() => 
+    cmsStore.getProjects().filter(p => p.published)
+  );
+  const [content, setContent] = useState<WebsiteContent>(() => cmsStore.getContent());
 
   useEffect(() => {
     const handleUpdate = () => {
-      setProjectsList(dataStore.getProjects());
+      setProjectsList(cmsStore.getProjects().filter(p => p.published));
+      setContent(cmsStore.getContent());
     };
+    window.addEventListener("cms_data_updated", handleUpdate);
     window.addEventListener("rh_data_updated", handleUpdate);
-    return () => window.removeEventListener("rh_data_updated", handleUpdate);
+    return () => {
+      window.removeEventListener("cms_data_updated", handleUpdate);
+      window.removeEventListener("rh_data_updated", handleUpdate);
+    };
   }, []);
 
   const filteredProjects = projectsList.filter(p => p.category === activeTab);
@@ -37,8 +46,12 @@ export default function Portfolio() {
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 sm:mb-16 gap-6 sm:gap-8">
           <div>
-            <p className="text-accent font-bold tracking-[0.4em] text-[9px] sm:text-xs mb-3 sm:mb-4 uppercase">Selected Masterpieces</p>
-            <h2 className="text-2xl md:text-5xl font-display font-medium text-text-pure tracking-tighter leading-tight">Cinematic <span className="text-accent font-light">Showcase</span></h2>
+            <p className="text-accent font-bold tracking-[0.4em] text-[9px] sm:text-xs mb-3 sm:mb-4 uppercase font-mono">
+              {content.portfolioBadge || "Selected Masterpieces"}
+            </p>
+            <h2 className="text-2xl md:text-5xl font-display font-medium text-text-pure tracking-tighter leading-tight">
+              {content.portfolioHeading || "Cinematic Showcase"}
+            </h2>
           </div>
           
           <div className="flex flex-wrap gap-1.5 sm:gap-3">
@@ -82,16 +95,19 @@ export default function Portfolio() {
                 }}
               >
                 <img 
-                  src={project.image} 
+                  src={project.thumbnail} 
                   alt={project.title}
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=800&auto=format&fit=crop";
+                  }}
                 />
                 
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-4 sm:p-10 flex flex-col justify-end">
                   <div className="flex items-start justify-between">
                     <div>
-                      <p className="text-accent text-[8px] sm:text-[10px] font-bold tracking-[0.3em] uppercase mb-1 sm:mb-2">{project.category}</p>
+                      <p className="text-accent text-[8px] sm:text-[10px] font-bold tracking-[0.3em] uppercase mb-1 sm:mb-2 font-mono">{project.category}</p>
                       <h3 className="text-base md:text-xl font-display font-medium mb-1 sm:mb-2 text-text-pure tracking-tight">{project.title}</h3>
                       <p className="text-text-soft text-[10px] md:text-xs font-light leading-relaxed line-clamp-2">{project.description}</p>
                     </div>

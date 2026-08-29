@@ -1,7 +1,8 @@
 import { useState, useEffect, FormEvent } from "react";
 import { motion } from "motion/react";
-import { Mail, Send, ChevronRight, Instagram, CheckCircle2, MessageCircle } from "lucide-react";
-import { dataStore, ProfileSettings } from "../lib/dataStore";
+import { Mail, Send, ChevronRight, CheckCircle2, MessageCircle } from "lucide-react";
+import { cmsStore } from "../lib/cmsStore";
+import { ContactInfo, SocialLinkItem, WebsiteContent } from "../lib/cmsTypes";
 
 const WhatsAppIcon = ({ size = 24, className = "" }: { size?: number; className?: string }) => (
   <svg 
@@ -17,7 +18,12 @@ const WhatsAppIcon = ({ size = 24, className = "" }: { size?: number; className?
 );
 
 export default function Contact() {
-  const [settings, setSettings] = useState<ProfileSettings>(() => dataStore.getSettings());
+  const [contactInfo, setContactInfo] = useState<ContactInfo>(() => cmsStore.getContactInfo());
+  const [socialLinks, setSocialLinks] = useState<SocialLinkItem[]>(() => 
+    cmsStore.getSocialLinks().filter(s => s.visible)
+  );
+  const [content, setContent] = useState<WebsiteContent>(() => cmsStore.getContent());
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -29,46 +35,25 @@ export default function Contact() {
 
   useEffect(() => {
     const handleUpdate = () => {
-      setSettings(dataStore.getSettings());
+      setContactInfo(cmsStore.getContactInfo());
+      setSocialLinks(cmsStore.getSocialLinks().filter(s => s.visible));
+      setContent(cmsStore.getContent());
     };
+    window.addEventListener("cms_data_updated", handleUpdate);
     window.addEventListener("rh_data_updated", handleUpdate);
-    return () => window.removeEventListener("rh_data_updated", handleUpdate);
+    return () => {
+      window.removeEventListener("cms_data_updated", handleUpdate);
+      window.removeEventListener("rh_data_updated", handleUpdate);
+    };
   }, []);
 
-  const cleanWhatsApp = (settings.whatsapp || "880157735667").replace(/[^0-9]/g, "");
-
-  const socialPlatforms = [
-    {
-      name: 'LinkedIn',
-      logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/linkedin.svg',
-      url: settings.linkedin || 'https://linkedin.com/in/rehmanhridoy',
-      glow: 'rgba(163, 133, 96, 0.4)'
-    },
-    {
-      name: 'Instagram',
-      logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/instagram.svg',
-      url: settings.instagram || 'https://www.instagram.com/rehman_hridoy/',
-      glow: 'rgba(163, 133, 96, 0.3)'
-    },
-    {
-      name: 'WhatsApp',
-      logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/whatsapp.svg',
-      url: `https://wa.me/${cleanWhatsApp}`,
-      glow: 'rgba(163, 133, 96, 0.4)'
-    },
-    {
-      name: 'Facebook',
-      logo: 'https://cdn.jsdelivr.net/npm/simple-icons@v11/icons/facebook.svg',
-      url: settings.facebook || 'https://www.facebook.com/HRlD0Y',
-      glow: 'rgba(163, 133, 96, 0.3)'
-    }
-  ];
+  const cleanWhatsApp = (contactInfo.whatsapp || "880157735667").replace(/[^0-9]/g, "");
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.message) return;
 
-    dataStore.addMessage(formData);
+    cmsStore.addMessage(formData);
     setLastSubmission({ ...formData });
     setSubmitted(true);
     setFormData({
@@ -96,13 +81,14 @@ export default function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <p className="text-accent font-bold tracking-[0.4em] text-[9px] mb-6 uppercase">The Final Frontier</p>
+            <p className="text-accent font-bold tracking-[0.4em] text-[9px] mb-6 uppercase font-mono">
+              {contactInfo.subheading || content.contactBadge || "The Final Frontier"}
+            </p>
             <h2 className="text-2xl md:text-5xl lg:text-6xl font-display font-medium mb-6 sm:mb-10 leading-[1] text-text-pure tracking-tighter">
-              Let's Compose <br />Your <span className="text-accent font-light">Masterpiece</span>
+              {contactInfo.heading || content.contactHeading || "Let's Compose Your Masterpiece"}
             </h2>
             <p className="text-xs md:text-lg text-text-soft mb-6 sm:mb-10 max-w-md leading-relaxed font-light">
-              Every legacy begins with an inquiry. Reach out today for a bespoke creative consultation. 
-              Let’s draft an enduring digital odyssey.
+              {contactInfo.description || content.contactDescription}
             </p>
             
             <div className="space-y-4 sm:space-y-6">
@@ -116,43 +102,25 @@ export default function Contact() {
                   <WhatsAppIcon size={18} className="sm:w-6 sm:h-6" />
                 </div>
                 <div>
-                  <p className="text-[7px] sm:text-[9px] text-text-muted uppercase font-bold tracking-[0.3em] mb-1">Direct Instant Chat</p>
+                  <p className="text-[7px] sm:text-[9px] text-text-muted uppercase font-bold tracking-[0.3em] mb-1 font-mono">Direct Instant Chat</p>
                   <p className="text-base sm:text-xl font-display font-bold text-text-pure tracking-tight group-hover:text-accent transition-colors duration-300 relative inline-block">
-                    WhatsApp Me ({settings.whatsapp || "+880157735667"})
+                    WhatsApp Me ({contactInfo.whatsapp || "+880157735667"})
                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300"></span>
                   </p>
                 </div>
               </a>
 
               <a 
-                href={`mailto:${settings.email || "reehmanhridoy@gmail.com"}`}
+                href={`mailto:${contactInfo.email || "reehmanhridoy@gmail.com"}`}
                 className="flex items-center gap-3 sm:gap-6 group"
               >
                 <div className="w-10 h-10 sm:w-14 sm:h-14 bg-secondary rounded-[12px] sm:rounded-[16px] flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-primary transition-all duration-500 border border-accent/10 group-hover:scale-110 shadow-xl flex-shrink-0">
                   <Mail size={18} className="sm:w-6 sm:h-6" />
                 </div>
                 <div>
-                  <p className="text-[7px] sm:text-[9px] text-text-muted uppercase font-bold tracking-[0.3em] mb-1">Direct Correspondence</p>
+                  <p className="text-[7px] sm:text-[9px] text-text-muted uppercase font-bold tracking-[0.3em] mb-1 font-mono">Direct Correspondence</p>
                   <p className="text-base sm:text-xl font-display font-bold text-text-pure tracking-tight group-hover:text-accent transition-colors duration-300 relative inline-block truncate max-w-[280px] sm:max-w-none">
-                    {settings.email || "reehmanhridoy@gmail.com"}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300"></span>
-                  </p>
-                </div>
-              </a>
-              
-              <a 
-                href={settings.instagram || "https://www.instagram.com/rehman_hridoy/"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-3 sm:gap-6 group"
-              >
-                <div className="w-10 h-10 sm:w-14 sm:h-14 bg-secondary rounded-[12px] sm:rounded-[16px] flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-primary transition-all duration-500 border border-accent/10 group-hover:scale-110 shadow-xl flex-shrink-0">
-                  <Instagram size={18} className="sm:w-6 sm:h-6" />
-                </div>
-                <div>
-                  <p className="text-[7px] sm:text-[9px] text-text-muted uppercase font-bold tracking-[0.3em] mb-1">Social Connection</p>
-                  <p className="text-base sm:text-xl font-display font-bold text-text-pure tracking-tight group-hover:text-accent transition-colors duration-300 relative inline-block">
-                    Instagram Showcase
+                    {contactInfo.email || "reehmanhridoy@gmail.com"}
                     <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300"></span>
                   </p>
                 </div>
@@ -160,9 +128,9 @@ export default function Contact() {
             </div>
             
             <div className="mt-8 sm:mt-12 flex items-center gap-3 sm:gap-4">
-              {socialPlatforms.map((platform, i) => (
+              {socialLinks.map((platform) => (
                 <a 
-                  key={i} 
+                  key={platform.id || platform.platform} 
                   href={platform.url}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -170,7 +138,7 @@ export default function Contact() {
                 >
                   <div 
                     className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 blur-xl pointer-events-none" 
-                    style={{ backgroundColor: platform.glow }}
+                    style={{ backgroundColor: platform.glowColor || "rgba(163, 133, 96, 0.4)" }}
                   />
                   <div 
                     className="w-5 h-5 sm:w-6 sm:h-6 bg-text-soft group-hover:bg-accent transition-all duration-500 relative z-10" 
@@ -214,7 +182,7 @@ export default function Contact() {
                         <MessageCircle size={12} /> Send via WhatsApp
                       </a>
                       <a
-                        href={`mailto:${settings.email || "reehmanhridoy@gmail.com"}?subject=${encodeURIComponent(`Project Inquiry: ${lastSubmission.ventureNature} from ${lastSubmission.name}`)}&body=${encodeURIComponent(`Name: ${lastSubmission.name}\nEmail: ${lastSubmission.email}\nProject Type: ${lastSubmission.ventureNature}\n\nMessage:\n${lastSubmission.message}`)}`}
+                        href={`mailto:${contactInfo.email || "reehmanhridoy@gmail.com"}?subject=${encodeURIComponent(`Project Inquiry: ${lastSubmission.ventureNature} from ${lastSubmission.name}`)}&body=${encodeURIComponent(`Name: ${lastSubmission.name}\nEmail: ${lastSubmission.email}\nProject Type: ${lastSubmission.ventureNature}\n\nMessage:\n${lastSubmission.message}`)}`}
                         className="px-3 py-1.5 bg-white/10 text-text-pure text-[10px] font-bold rounded-lg flex items-center gap-1.5 hover:bg-white/20 transition-all border border-white/10"
                       >
                         <Mail size={12} /> Send via Email App
@@ -226,7 +194,7 @@ export default function Contact() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <div className="space-y-2">
-                  <label className="text-[7px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] ml-2">Identity</label>
+                  <label className="text-[7px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] ml-2 font-mono">Identity</label>
                   <input 
                     type="text" 
                     required
@@ -237,7 +205,7 @@ export default function Contact() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[7px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] ml-2">Correspondence</label>
+                  <label className="text-[7px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] ml-2 font-mono">Correspondence</label>
                   <input 
                     type="email" 
                     required
@@ -250,7 +218,7 @@ export default function Contact() {
               </div>
               
               <div className="space-y-2">
-                <label className="text-[7px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] ml-2">Venture Nature</label>
+                <label className="text-[7px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] ml-2 font-mono">Venture Nature</label>
                 <div className="relative group">
                   <select 
                     value={formData.ventureNature}
@@ -270,7 +238,7 @@ export default function Contact() {
               </div>
               
               <div className="space-y-2">
-                <label className="text-[7px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] ml-2">Creative Intent</label>
+                <label className="text-[7px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] ml-2 font-mono">Creative Intent</label>
                 <textarea 
                   rows={3}
                   required
@@ -282,7 +250,7 @@ export default function Contact() {
               </div>
               
               <button type="submit" className="w-full py-3.5 sm:py-5 bg-accent hover:bg-accent-hover text-primary font-bold rounded-full transition-all duration-500 flex items-center justify-center gap-2 sm:gap-3 glow-sm hover:glow-md shadow-2xl hover:-translate-y-1 uppercase tracking-[0.3em] text-[8px] sm:text-[10px]">
-                Inaugurate Project <Send size={14} className="group-hover:translate-x-1 transition-transform sm:w-4 sm:h-4" />
+                {contactInfo.ctaText || "Inaugurate Project"} <Send size={14} className="group-hover:translate-x-1 transition-transform sm:w-4 sm:h-4" />
               </button>
             </form>
           </motion.div>

@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { motion } from "motion/react";
 import { Play } from "lucide-react";
 import VideoModal from "./VideoModal";
-import { dataStore, ClientReview } from "../lib/dataStore";
+import { cmsStore } from "../lib/cmsStore";
+import { TestimonialItem, WebsiteContent } from "../lib/cmsTypes";
 
 // Helper to extract YouTube ID
 const getYouTubeId = (url: string) => {
@@ -13,15 +14,25 @@ const getYouTubeId = (url: string) => {
 
 export default function Services() {
   const [selectedVideo, setSelectedVideo] = useState<{ id: string, title: string } | null>(null);
-  const [reviewsList, setReviewsList] = useState<ClientReview[]>(() => dataStore.getReviews());
+  const [reviewsList, setReviewsList] = useState<TestimonialItem[]>(() => 
+    cmsStore.getTestimonials().filter(t => t.visible && (t.youtubeUrl || t.image))
+  );
+  const [content, setContent] = useState<WebsiteContent>(() => cmsStore.getContent());
 
   useEffect(() => {
     const handleUpdate = () => {
-      setReviewsList(dataStore.getReviews());
+      setReviewsList(cmsStore.getTestimonials().filter(t => t.visible && (t.youtubeUrl || t.image)));
+      setContent(cmsStore.getContent());
     };
+    window.addEventListener("cms_data_updated", handleUpdate);
     window.addEventListener("rh_data_updated", handleUpdate);
-    return () => window.removeEventListener("rh_data_updated", handleUpdate);
+    return () => {
+      window.removeEventListener("cms_data_updated", handleUpdate);
+      window.removeEventListener("rh_data_updated", handleUpdate);
+    };
   }, []);
+
+  if (reviewsList.length === 0) return null;
 
   return (
     <section id="services" className="py-24 bg-primary relative overflow-hidden">
@@ -35,9 +46,9 @@ export default function Services() {
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-accent font-bold tracking-[0.4em] text-[10px] sm:text-xs mb-4 uppercase"
+            className="text-accent font-bold tracking-[0.4em] text-[10px] sm:text-xs mb-4 uppercase font-mono"
           >
-            Voices of Impact
+            {content.servicesBadge || "Voices of Impact"}
           </motion.p>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
@@ -46,7 +57,7 @@ export default function Services() {
             transition={{ delay: 0.1 }}
             className="text-3xl md:text-6xl font-display font-medium text-text-pure tracking-tighter"
           >
-            Client <span className="text-accent font-light italic">Video Reviews</span>
+            {content.servicesHeading || "Client Video Reviews"}
           </motion.h2>
           <motion.div 
             initial={{ opacity: 0, width: 0 }}
@@ -60,7 +71,7 @@ export default function Services() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 sm:gap-12">
           {reviewsList.map((review, index) => (
             <motion.div
-              key={review.client}
+              key={review.id || review.name}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -72,20 +83,25 @@ export default function Services() {
                 <div 
                   className="relative aspect-[9/16] rounded-[32px] overflow-hidden cursor-pointer group/video border border-white/5 glass-dark glow-sm hover:glow-md transition-all duration-700"
                   onClick={() => {
-                    const id = getYouTubeId(review.youtubeUrl);
-                    if (id) setSelectedVideo({ id, title: review.client });
+                    const id = getYouTubeId(review.youtubeUrl || "");
+                    if (id) setSelectedVideo({ id, title: review.name });
                   }}
                 >
                   <img 
-                    src={review.thumbnail} 
-                    alt={review.client} 
+                    src={review.image} 
+                    alt={review.name} 
                     className="w-full h-full object-cover grayscale opacity-40 group-hover/video:grayscale-0 group-hover/video:opacity-100 group-hover/video:scale-105 transition-all duration-700" 
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&auto=format&fit=crop";
+                    }}
                   />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-14 h-14 bg-accent/90 rounded-full flex items-center justify-center text-primary backdrop-blur-sm scale-90 group-hover/video:scale-110 transition-transform duration-500">
-                      <Play fill="currentColor" size={20} className="translate-x-0.5" />
+                  {review.youtubeUrl && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-14 h-14 bg-accent/90 rounded-full flex items-center justify-center text-primary backdrop-blur-sm scale-90 group-hover/video:scale-110 transition-transform duration-500 shadow-lg shadow-accent/30">
+                        <Play fill="currentColor" size={20} className="translate-x-0.5" />
+                      </div>
                     </div>
-                  </div>
+                  )}
                   {/* Subtle Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/60 via-transparent to-transparent pointer-events-none" />
                 </div>
@@ -93,10 +109,10 @@ export default function Services() {
                 {/* Client Footer Info */}
                 <div className="mt-6 text-center">
                   <h4 className="text-text-pure font-display font-bold text-lg tracking-tight mb-1 group-hover:text-accent transition-colors">
-                    {review.client}
+                    {review.name}
                   </h4>
-                  <p className="text-text-muted text-[10px] font-bold uppercase tracking-[0.2em] group-hover:text-text-soft transition-colors">
-                    {review.role}
+                  <p className="text-text-muted text-[10px] font-bold uppercase tracking-[0.2em] group-hover:text-text-soft transition-colors font-mono">
+                    {review.role} {review.company && `• ${review.company}`}
                   </p>
                 </div>
               </div>
@@ -114,4 +130,3 @@ export default function Services() {
     </section>
   );
 }
-

@@ -4,25 +4,33 @@
  */
 
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { dataStore } from "./lib/dataStore";
+import { cmsStore } from "./lib/cmsStore";
+import { SectionConfig } from "./lib/cmsTypes";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Services from "./components/Services";
 import Portfolio from "./components/Portfolio";
 import WhyHireMe from "./components/WhyHireMe";
 import Journey from "./components/Journey";
+import Brands from "./components/Brands";
 import About from "./components/About";
+import Testimonials from "./components/Testimonials";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import PortfolioPage from "./pages/PortfolioPage";
-import AdminPage from "./pages/AdminPage";
+import AdminRouter from "./admin/AdminRouter";
 
 function CloudDataLoader() {
   useEffect(() => {
     // Initial global fetch from Cloud Database
-    dataStore.loadFromCloud();
+    cmsStore.loadFromCloud().then(() => {
+      const seo = cmsStore.getSeo();
+      if (seo?.siteTitle) {
+        document.title = seo.siteTitle;
+      }
+    });
   }, []);
 
   return null;
@@ -55,6 +63,60 @@ function ScrollToTop() {
   return null;
 }
 
+function DynamicHomeSections() {
+  const [sections, setSections] = useState<SectionConfig[]>(() => 
+    cmsStore.getSections().filter(s => s.visible).sort((a, b) => a.order - b.order)
+  );
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      setSections(cmsStore.getSections().filter(s => s.visible).sort((a, b) => a.order - b.order));
+    };
+    window.addEventListener("cms_data_updated", handleUpdate);
+    window.addEventListener("rh_data_updated", handleUpdate);
+    return () => {
+      window.removeEventListener("cms_data_updated", handleUpdate);
+      window.removeEventListener("rh_data_updated", handleUpdate);
+    };
+  }, []);
+
+  const renderSection = (id: string) => {
+    switch (id) {
+      case "hero":
+        return <Hero key="hero" />;
+      case "portfolio":
+        return <Portfolio key="portfolio" />;
+      case "services":
+        return <Services key="services" />;
+      case "whyHire":
+        return <WhyHireMe key="whyHire" />;
+      case "journey":
+        return <Journey key="journey" />;
+      case "brands":
+        return <Brands key="brands" />;
+      case "about":
+        return <About key="about" />;
+      case "testimonials":
+        return <Testimonials key="testimonials" />;
+      case "contact":
+        return <Contact key="contact" />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      {sections.map((section) => renderSection(section.id))}
+    </motion.div>
+  );
+}
+
 function AnimatedRoutes() {
   const location = useLocation();
 
@@ -63,24 +125,7 @@ function AnimatedRoutes() {
       <Routes location={location}>
         <Route
           path="/"
-          element={
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.5 }}
-            >
-              <Hero />
-
-              <Portfolio />
-              <Services />
-              <WhyHireMe />
-              <Journey />
-              
-              <About />
-              <Contact />
-            </motion.div>
-          }
+          element={<DynamicHomeSections />}
         />
         <Route
           path="/work"
@@ -96,17 +141,8 @@ function AnimatedRoutes() {
           }
         />
         <Route
-          path="/admin"
-          element={
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <AdminPage />
-            </motion.div>
-          }
+          path="/admin/*"
+          element={<AdminRouter />}
         />
       </Routes>
     </AnimatePresence>

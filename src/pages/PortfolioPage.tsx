@@ -3,7 +3,8 @@ import { motion, AnimatePresence } from "motion/react";
 import { Search, Play, ArrowLeft, Clock, Share2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import VideoModal from "../components/VideoModal";
-import { dataStore, Project } from "../lib/dataStore";
+import { cmsStore } from "../lib/cmsStore";
+import { ProjectItem } from "../lib/cmsTypes";
 
 // Helper to extract YouTube ID
 const getYouTubeId = (url: string) => {
@@ -18,14 +19,20 @@ export default function PortfolioPage() {
   const [activeCategory, setActiveCategory] = useState("Reels");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedVideo, setSelectedVideo] = useState<{ id: string, title: string } | null>(null);
-  const [videoProjects, setVideoProjects] = useState<Project[]>(() => dataStore.getProjects());
+  const [videoProjects, setVideoProjects] = useState<ProjectItem[]>(() => 
+    cmsStore.getProjects().filter(p => p.published)
+  );
 
   useEffect(() => {
     const handleUpdate = () => {
-      setVideoProjects(dataStore.getProjects());
+      setVideoProjects(cmsStore.getProjects().filter(p => p.published));
     };
+    window.addEventListener("cms_data_updated", handleUpdate);
     window.addEventListener("rh_data_updated", handleUpdate);
-    return () => window.removeEventListener("rh_data_updated", handleUpdate);
+    return () => {
+      window.removeEventListener("cms_data_updated", handleUpdate);
+      window.removeEventListener("rh_data_updated", handleUpdate);
+    };
   }, []);
 
   const filteredVideos = useMemo(() => {
@@ -55,12 +62,12 @@ export default function PortfolioPage() {
             >
               <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
             </Link>
-            <span className="text-xs font-bold tracking-[0.4em] text-accent uppercase">Work Showcase</span>
+            <span className="text-xs font-bold tracking-[0.4em] text-accent uppercase font-mono">Work Showcase</span>
           </div>
           
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
             <h1 className="text-5xl md:text-7xl font-display font-bold leading-tight max-w-2xl text-text-pure">
-              Cinematic <span className="text-accent italic">Masterpieces</span> & Visual Stories
+              Cinematic <span className="text-accent italic font-light">Masterpieces</span> & Visual Stories
             </h1>
             
             {/* Search */}
@@ -71,7 +78,7 @@ export default function PortfolioPage() {
                 placeholder="Search projects..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-secondary/50 border border-white/10 rounded-2xl pl-12 pr-6 py-4 focus:outline-none focus:border-accent/40 focus:bg-secondary transition-all glass-dark text-text-pure placeholder:text-text-muted"
+                className="w-full bg-secondary/50 border border-white/10 rounded-2xl pl-12 pr-6 py-4 focus:outline-none focus:border-accent/40 focus:bg-secondary transition-all glass-dark text-text-pure placeholder:text-text-muted text-xs"
               />
             </div>
           </div>
@@ -83,7 +90,7 @@ export default function PortfolioPage() {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 border ${
+              className={`px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 border ${
                 activeCategory === cat 
                   ? "bg-accent text-primary border-accent glow-sm" 
                   : "bg-white/5 text-text-muted border-white/5 hover:border-white/20 hover:bg-white/10"
@@ -107,7 +114,7 @@ export default function PortfolioPage() {
             {filteredVideos.map((video, idx) => {
               const youtubeId = getYouTubeId(video.youtubeUrl);
               const ytFallback = youtubeId ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg` : "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?q=80&w=800&auto=format&fit=crop";
-              const displayImage = video.image || ytFallback;
+              const displayImage = video.thumbnail || ytFallback;
               
               return (
                 <motion.div
@@ -151,7 +158,7 @@ export default function PortfolioPage() {
                   
                   <div className="px-2">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-[10px] font-bold tracking-[0.2em] text-accent uppercase">{video.category}</span>
+                      <span className="text-[10px] font-bold tracking-[0.2em] text-accent uppercase font-mono">{video.category}</span>
                       <Share2 
                         size={14} 
                         className="text-text-muted hover:text-text-pure transition-colors cursor-pointer" 
@@ -178,10 +185,10 @@ export default function PortfolioPage() {
         {/* Empty State */}
         {filteredVideos.length === 0 && (
           <div className="py-24 text-center">
-            <p className="text-xl text-text-muted font-display italic">No cinematic projects found for this search.</p>
+            <p className="text-xl text-text-muted font-display italic">No cinematic projects found for this category or search.</p>
             <button 
               onClick={() => { setActiveCategory("Reels"); setSearchQuery(""); }}
-              className="mt-6 text-accent font-bold hover:underline glow-sm"
+              className="mt-6 text-accent font-bold hover:underline glow-sm text-xs uppercase tracking-wider font-mono"
             >
               Reset Filters
             </button>

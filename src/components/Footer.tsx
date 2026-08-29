@@ -1,20 +1,27 @@
 import { useState, useEffect } from "react";
 import { Play } from "lucide-react";
 import { Link } from "react-router-dom";
-import { dataStore, ProfileSettings } from "../lib/dataStore";
+import { cmsStore } from "../lib/cmsStore";
+import { ProfileHeroData, WebsiteContent } from "../lib/cmsTypes";
 
 export default function Footer() {
-  const [settings, setSettings] = useState<ProfileSettings>(() => dataStore.getSettings());
+  const [profile, setProfile] = useState<ProfileHeroData>(() => cmsStore.getProfile());
+  const [content, setContent] = useState<WebsiteContent>(() => cmsStore.getContent());
 
   useEffect(() => {
     const handleUpdate = () => {
-      setSettings(dataStore.getSettings());
+      setProfile(cmsStore.getProfile());
+      setContent(cmsStore.getContent());
     };
+    window.addEventListener("cms_data_updated", handleUpdate);
     window.addEventListener("rh_data_updated", handleUpdate);
-    return () => window.removeEventListener("rh_data_updated", handleUpdate);
+    return () => {
+      window.removeEventListener("cms_data_updated", handleUpdate);
+      window.removeEventListener("rh_data_updated", handleUpdate);
+    };
   }, []);
 
-  const nameParts = (settings.name || "Rehman Hridoy").split(" ");
+  const nameParts = (profile.name || "Rehman Hridoy").split(" ");
   const firstName = nameParts[0] || "REHMAN";
   const restName = nameParts.slice(1).join(" ") || "HRIDOY";
 
@@ -43,7 +50,8 @@ export default function Footer() {
 
         <div className="flex flex-col md:flex-row items-center justify-between gap-5 pt-8 border-t border-accent/5">
           <p className="text-[8px] sm:text-[9px] text-text-muted font-bold tracking-[0.2em] uppercase text-center md:text-left">
-            © 2026 {settings.name || "REHMAN HRIDOY"}. <span className="text-accent">Crafting Excellence.</span>
+            {content.footerCopyright || `© 2026 ${profile.name.toUpperCase()}. All Rights Reserved.`}{" "}
+            <span className="text-accent">{content.footerTagline || "Crafting Excellence."}</span>
           </p>
           <div className="flex items-center gap-5 sm:gap-6 text-[8px] sm:text-[9px] text-text-muted font-bold uppercase tracking-[0.2em]">
             <a href="#" className="hover:text-text-pure transition-all duration-300">Privacy</a>

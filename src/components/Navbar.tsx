@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X, Play } from "lucide-react";
-import { dataStore, ProfileSettings } from "../lib/dataStore";
+import { cmsStore } from "../lib/cmsStore";
+import { ProfileHeroData } from "../lib/cmsTypes";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -15,15 +16,19 @@ const navLinks = [
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [settings, setSettings] = useState<ProfileSettings>(() => dataStore.getSettings());
+  const [profile, setProfile] = useState<ProfileHeroData>(() => cmsStore.getProfile());
   const location = useLocation();
 
   useEffect(() => {
     const handleUpdate = () => {
-      setSettings(dataStore.getSettings());
+      setProfile(cmsStore.getProfile());
     };
+    window.addEventListener("cms_data_updated", handleUpdate);
     window.addEventListener("rh_data_updated", handleUpdate);
-    return () => window.removeEventListener("rh_data_updated", handleUpdate);
+    return () => {
+      window.removeEventListener("cms_data_updated", handleUpdate);
+      window.removeEventListener("rh_data_updated", handleUpdate);
+    };
   }, []);
 
   useEffect(() => {
@@ -34,7 +39,7 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const nameParts = (settings.name || "Rehman Hridoy").split(" ");
+  const nameParts = (profile.name || "Rehman Hridoy").split(" ");
   const firstName = nameParts[0] || "REHMAN";
   const restName = nameParts.slice(1).join(" ") || "HRIDOY";
 
