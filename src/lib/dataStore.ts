@@ -443,7 +443,7 @@ export const dataStore = {
 
   // Password
   getAdminPassword(): string {
-    return localStorage.getItem(STORAGE_KEYS.ADMIN_PASS) || "admin123";
+    return localStorage.getItem(STORAGE_KEYS.ADMIN_PASS) || "halima123";
   },
   setAdminPassword(pass: string): void {
     localStorage.setItem(STORAGE_KEYS.ADMIN_PASS, pass);
