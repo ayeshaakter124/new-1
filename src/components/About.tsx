@@ -63,10 +63,7 @@ export default function About() {
             <div className="absolute inset-0 bg-accent/20 blur-[100px] rounded-full z-0 opacity-10" />
             <div className="relative z-10 aspect-[4/5] rounded-[2rem] overflow-hidden border border-white/10 glass-dark bg-secondary/80 glow-lg group">
               <img 
-                src={aboutPortrait || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop"}
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop";
-                }}
+                src={aboutPortrait}
                 alt="Rehman Hridoy - Creative Director" 
                 className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105 select-none" 
               />

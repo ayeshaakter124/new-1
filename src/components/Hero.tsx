@@ -85,10 +85,7 @@ export default function Hero() {
             {/* Inner Image Frame */}
             <div className="relative z-10 w-full h-full rounded-[36px] sm:rounded-[44px] overflow-hidden border border-white/10 glass-dark bg-secondary/90 flex items-center justify-center">
               <img 
-                 src={heroPortrait || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000&auto=format&fit=crop"} 
-                 onError={(e) => {
-                   (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1000&auto=format&fit=crop";
-                 }}
+                 src={heroPortrait} 
                  alt="Rehman Hridoy" 
                  className="w-full h-full object-cover object-center transition-transform duration-700 hover:scale-105 select-none" 
               />
