@@ -106,7 +106,7 @@ export default function Contact() {
                 <div className="min-w-0 flex-1">
                   <p className="text-[7px] sm:text-[9px] text-text-muted uppercase font-bold tracking-[0.25em] mb-0.5 font-mono">Direct Instant Chat</p>
                   <p className="text-sm sm:text-xl font-display font-bold text-text-pure tracking-tight group-hover:text-accent transition-colors truncate">
-                    WhatsApp Me ({contactInfo.whatsapp || "+880157735667"})
+                    WhatsApp Me
                   </p>
                 </div>
               </a>
