@@ -27,12 +27,12 @@ export default function Journey() {
       <div className="absolute bottom-1/4 right-0 w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] bg-panel/5 rounded-full blur-[80px] sm:blur-[100px] pointer-events-none" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
-        <div className="mb-10 sm:mb-16">
+        <div className="mb-8 sm:mb-12">
           <motion.p
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="text-accent font-bold tracking-[0.35em] text-[10px] sm:text-xs mb-2 sm:mb-3 uppercase font-mono"
+            className="text-accent font-bold tracking-[0.3em] text-[9px] sm:text-[10px] mb-1.5 sm:mb-2 uppercase font-mono"
           >
             {content.journeyBadge || "The Evolution"}
           </motion.p>
@@ -41,7 +41,7 @@ export default function Journey() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-2xl sm:text-4xl md:text-5xl font-display font-bold text-text-pure tracking-[-0.02em] leading-tight"
+            className="text-2xl sm:text-3xl md:text-4xl font-display font-bold text-text-pure tracking-tight leading-tight"
           >
             {content.journeyHeading || "THE JOURNEY"}
           </motion.h2>

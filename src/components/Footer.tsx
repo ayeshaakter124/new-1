@@ -30,12 +30,12 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-10 mb-8 sm:mb-12">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform duration-300 glow-sm shadow-md">
-              <Play className="text-secondary fill-secondary w-3.5 h-3.5 sm:w-5 sm:h-5 translate-x-0.5" />
+          <Link to="/" className="flex items-center gap-2 sm:gap-2.5 group">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-accent rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-300 glow-sm shadow-md">
+              <Play className="text-secondary fill-secondary w-3 h-3 sm:w-3.5 sm:h-3.5 translate-x-0.5" />
             </div>
-            <span className="font-display font-extrabold text-lg sm:text-xl tracking-tight text-text-pure uppercase">
-              {firstName}<span className="text-accent font-semibold ml-1 sm:ml-2">{restName}</span>
+            <span className="font-display font-bold text-sm sm:text-base tracking-tight text-text-pure uppercase">
+              {firstName}<span className="text-accent font-semibold ml-1">{restName}</span>
             </span>
           </Link>
 

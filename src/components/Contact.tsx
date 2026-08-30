@@ -82,13 +82,13 @@ export default function Contact() {
             viewport={{ once: true }}
             className="text-left"
           >
-            <p className="text-accent font-bold tracking-[0.35em] text-[10px] sm:text-xs mb-3 sm:mb-4 uppercase font-mono">
+            <p className="text-accent font-bold tracking-[0.3em] text-[9px] sm:text-[10px] mb-2 sm:mb-3 uppercase font-mono">
               {contactInfo.subheading || content.contactBadge || "The Final Frontier"}
             </p>
-            <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-4 sm:mb-8 leading-[1.08] sm:leading-[1.02] text-text-pure tracking-[-0.02em]">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-display font-bold mb-3 sm:mb-6 leading-[1.12] sm:leading-[1.08] text-text-pure tracking-tight">
               {contactInfo.heading || content.contactHeading || "Let's Compose Your Masterpiece"}
             </h2>
-            <p className="text-xs sm:text-base md:text-lg text-text-soft mb-6 sm:mb-10 max-w-md leading-relaxed font-normal">
+            <p className="text-xs sm:text-sm md:text-base text-text-soft mb-6 sm:mb-8 max-w-md leading-relaxed font-normal">
               {contactInfo.description || content.contactDescription}
             </p>
             

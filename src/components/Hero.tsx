@@ -60,25 +60,25 @@ export default function Hero() {
           </div>
 
           {/* Main Hero Headline */}
-          <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-extrabold leading-[1.02] sm:leading-[0.92] mb-5 sm:mb-8 tracking-[-0.03em] text-text-pure">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-[1.12] sm:leading-[1.08] mb-4 sm:mb-6 tracking-tight text-text-pure">
             {content.heroHeadingLine1 || "Creative"}{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-text-pure via-accent to-accent font-extrabold">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-text-pure via-accent to-accent font-bold">
               {content.heroHeadingLine2 || "Visuals"}
             </span> <br className="hidden sm:inline" />
             {content.heroHeadingLine3 || "for Modern Brands"}
           </h1>
           
-          <p className="text-xs sm:text-base md:text-lg text-text-soft mb-6 sm:mb-10 max-w-xl leading-relaxed font-normal">
+          <p className="text-xs sm:text-sm md:text-base text-text-soft mb-6 sm:mb-8 max-w-lg leading-relaxed font-normal">
             {profile.shortBio || content.heroDescription}
           </p>
           
           {/* Action CTAs */}
-          <div className="flex flex-wrap gap-2.5 sm:gap-4">
+          <div className="flex flex-wrap gap-2.5 sm:gap-3.5">
             <Link
               to={profile.ctaPrimaryUrl || "/#contact"}
-              className="group relative bg-accent hover:bg-accent-hover text-primary font-bold px-5 py-3 sm:px-8 sm:py-4 rounded-full transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden glow-md shadow-lg shadow-accent/20 active:scale-95"
+              className="group relative bg-accent hover:bg-accent-hover text-primary font-bold px-5 py-2.5 sm:px-7 sm:py-3.5 rounded-full transition-all duration-300 flex items-center justify-center gap-2 overflow-hidden glow-md shadow-lg shadow-accent/20 active:scale-95"
             >
-              <span className="z-10 uppercase tracking-widest text-[9px] sm:text-[10px]">
+              <span className="z-10 uppercase tracking-wider text-[9px] sm:text-[10px] font-mono">
                 {profile.ctaPrimaryText || "Hire Me Now"}
               </span>
               <ChevronRight className="z-10 w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
@@ -86,9 +86,9 @@ export default function Hero() {
 
             <Link
               to={profile.ctaSecondaryUrl || "/work"}
-              className="glass hover:bg-white/10 text-text-pure font-bold px-5 py-3 sm:px-8 sm:py-4 rounded-full transition-all duration-300 flex items-center justify-center gap-2 border border-accent/20 active:scale-95"
+              className="glass hover:bg-white/10 text-text-pure font-bold px-5 py-2.5 sm:px-7 sm:py-3.5 rounded-full transition-all duration-300 flex items-center justify-center gap-2 border border-accent/20 active:scale-95"
             >
-              <span className="uppercase tracking-widest text-[9px] sm:text-[10px]">
+              <span className="uppercase tracking-wider text-[9px] sm:text-[10px] font-mono">
                 {profile.ctaSecondaryText || "View My Work"}
               </span>
               <Play className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-text-pure" />

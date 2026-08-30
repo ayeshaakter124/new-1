@@ -75,24 +75,24 @@ export default function Navbar() {
           {/* Logo */}
           <Link 
             to="/" 
-            className="flex items-center gap-2 sm:gap-3 group"
+            className="flex items-center gap-2 sm:gap-2.5 group"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform duration-300 glow-sm shadow-md shadow-accent/20">
-              <Play className="text-secondary fill-secondary w-3.5 h-3.5 sm:w-4 sm:h-4 translate-x-0.5" />
+            <div className="w-7 h-7 sm:w-8 sm:h-8 bg-accent rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-300 glow-sm shadow-md shadow-accent/20">
+              <Play className="text-secondary fill-secondary w-3 h-3 sm:w-3.5 sm:h-3.5 translate-x-0.5" />
             </div>
-            <span className="font-display font-extrabold text-base sm:text-xl tracking-tight text-text-pure uppercase">
-              {firstName}<span className="text-accent font-semibold ml-1 sm:ml-2">{restName}</span>
+            <span className="font-display font-bold text-sm sm:text-base tracking-tight text-text-pure uppercase">
+              {firstName}<span className="text-accent font-semibold ml-1">{restName}</span>
             </span>
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-7 lg:gap-8">
+          <nav className="hidden md:flex items-center gap-6 lg:gap-7">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.href}
-                className={`text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-[0.25em] transition-all relative group py-1 ${
+                className={`text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-[0.2em] transition-all relative group py-1 ${
                   location.pathname === link.href ? "text-accent" : "text-text-muted hover:text-accent"
                 }`}
               >
@@ -104,7 +104,7 @@ export default function Navbar() {
             ))}
             <Link 
               to="/#contact"
-              className="bg-accent hover:bg-accent-hover text-primary font-mono font-bold px-5 py-2.5 rounded-full text-[10px] uppercase tracking-wider transition-all duration-300 glow-sm hover:glow-md scale-100 hover:scale-105 active:scale-95 shadow-lg shadow-accent/20"
+              className="bg-accent hover:bg-accent-hover text-primary font-mono font-bold px-4 py-2 sm:px-5 sm:py-2.5 rounded-full text-[9px] sm:text-[10px] uppercase tracking-wider transition-all duration-300 glow-sm hover:glow-md scale-100 hover:scale-105 active:scale-95 shadow-lg shadow-accent/20"
             >
               Get In Touch
             </Link>

@@ -62,11 +62,11 @@ export default function PortfolioPage() {
             >
               <ArrowLeft size={18} className="group-hover:-translate-x-1 transition-transform sm:w-5 sm:h-5" />
             </Link>
-            <span className="text-[10px] sm:text-xs font-bold tracking-[0.35em] text-accent uppercase font-mono">Work Showcase</span>
+            <span className="text-[9px] sm:text-[10px] font-bold tracking-[0.3em] text-accent uppercase font-mono">Work Showcase</span>
           </div>
           
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 sm:gap-8">
-            <h1 className="text-3xl sm:text-5xl md:text-7xl font-display font-extrabold leading-[1.02] sm:leading-tight max-w-2xl text-text-pure tracking-[-0.02em]">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-bold leading-[1.12] sm:leading-tight max-w-2xl text-text-pure tracking-tight">
               Cinematic <span className="text-accent italic font-bold">Masterpieces</span> & Visual Stories
             </h1>
             
@@ -85,12 +85,12 @@ export default function PortfolioPage() {
         </div>
 
         {/* Horizontal Category Filters */}
-        <div className="flex items-center gap-2 sm:gap-3 mb-8 sm:mb-12 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
+        <div className="flex items-center gap-2 sm:gap-2.5 mb-8 sm:mb-12 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4 sm:mx-0 sm:px-0">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`px-4 py-2 sm:px-6 sm:py-2.5 rounded-full text-[9px] sm:text-xs font-mono font-bold uppercase tracking-wider transition-all duration-300 border shrink-0 whitespace-nowrap active:scale-95 ${
+              className={`px-3.5 py-1.5 sm:px-5 sm:py-2 rounded-full text-[9px] sm:text-[10px] font-mono font-bold uppercase tracking-wider transition-all duration-300 border shrink-0 whitespace-nowrap active:scale-95 ${
                 activeCategory === cat 
                   ? "bg-accent text-primary border-accent glow-sm shadow-md shadow-accent/20" 
                   : "bg-white/5 text-text-muted border-white/5 hover:border-white/20 hover:bg-white/10"
