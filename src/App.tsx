@@ -4,7 +4,7 @@
  */
 
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { cmsStore } from "./lib/cmsStore";
 import { SectionConfig } from "./lib/cmsTypes";
@@ -14,17 +14,25 @@ import Services from "./components/Services";
 import Portfolio from "./components/Portfolio";
 import WhyHireMe from "./components/WhyHireMe";
 import Journey from "./components/Journey";
-import Brands from "./components/Brands";
 import About from "./components/About";
-import Testimonials from "./components/Testimonials";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import PortfolioPage from "./pages/PortfolioPage";
-import AdminRouter from "./admin/AdminRouter";
+
+// Lazy-load heavier auxiliary pages for ultra-fast initial homepage paint
+const PortfolioPage = lazy(() => import("./pages/PortfolioPage"));
+const AdminRouter = lazy(() => import("./admin/AdminRouter"));
+
+function RouteLoadingFallback() {
+  return (
+    <div className="min-h-screen bg-primary flex items-center justify-center">
+      <div className="w-10 h-10 border-2 border-accent border-t-transparent rounded-full animate-spin glow-sm" />
+    </div>
+  );
+}
 
 function CloudDataLoader() {
   useEffect(() => {
-    // Initial global fetch from Cloud Database
+    // Initial non-blocking global fetch from Cloud Database
     cmsStore.loadFromCloud().then(() => {
       const seo = cmsStore.getSeo();
       if (seo?.siteTitle) {
@@ -92,12 +100,8 @@ function DynamicHomeSections() {
         return <WhyHireMe key="whyHire" />;
       case "journey":
         return <Journey key="journey" />;
-      case "brands":
-        return <Brands key="brands" />;
       case "about":
         return <About key="about" />;
-      case "testimonials":
-        return <Testimonials key="testimonials" />;
       case "contact":
         return <Contact key="contact" />;
       default:
@@ -121,31 +125,33 @@ function AnimatedRoutes() {
   const location = useLocation();
 
   return (
-    <AnimatePresence mode="wait">
-      <Routes location={location}>
-        <Route
-          path="/"
-          element={<DynamicHomeSections />}
-        />
-        <Route
-          path="/work"
-          element={
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.05 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <PortfolioPage />
-            </motion.div>
-          }
-        />
-        <Route
-          path="/admin/*"
-          element={<AdminRouter />}
-        />
-      </Routes>
-    </AnimatePresence>
+    <Suspense fallback={<RouteLoadingFallback />}>
+      <AnimatePresence mode="wait">
+        <Routes location={location}>
+          <Route
+            path="/"
+            element={<DynamicHomeSections />}
+          />
+          <Route
+            path="/work"
+            element={
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1.05 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <PortfolioPage />
+              </motion.div>
+            }
+          />
+          <Route
+            path="/admin/*"
+            element={<AdminRouter />}
+          />
+        </Routes>
+      </AnimatePresence>
+    </Suspense>
   );
 }
 

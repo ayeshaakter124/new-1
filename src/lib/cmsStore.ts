@@ -646,8 +646,6 @@ export const DEFAULT_CMS_STATE: CMSState = {
     { id: "journey", name: "Career Journey Timeline", visible: true, order: 5 },
     { id: "about", name: "About Me & Narrative", visible: true, order: 6 },
     { id: "contact", name: "Contact & Connection", visible: true, order: 7 },
-    { id: "brands", name: "Tools & Platforms", visible: false, order: 8 },
-    { id: "testimonials", name: "Client Testimonials", visible: false, order: 9 },
   ],
 
   seo: {
@@ -1039,9 +1037,15 @@ export const cmsStore = {
     return this.set("content", updated);
   },
 
-  getSections(): SectionConfig[] { return this.get("sections"); },
+  getSections(): SectionConfig[] { 
+    const raw: any[] = this.get("sections") || [];
+    return raw
+      .filter((s) => s.id !== "brands" && s.id !== "testimonials")
+      .map((s, idx) => ({ ...s, order: s.order || idx + 1 }));
+  },
   saveSections(sections: SectionConfig[]): SectionConfig[] {
-    return this.set("sections", sections);
+    const cleaned = sections.filter((s) => s.id !== ("brands" as any) && s.id !== ("testimonials" as any));
+    return this.set("sections", cleaned);
   },
   toggleSectionVisibility(id: string): SectionConfig[] {
     const list = this.getSections().map(s => s.id === id ? { ...s, visible: !s.visible } : s);

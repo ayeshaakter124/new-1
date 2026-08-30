@@ -94,15 +94,20 @@ export const cloudStore = {
     if (!config.supabaseUrl || !config.supabaseAnonKey) return null;
 
     const baseUrl = config.supabaseUrl.replace(/\/$/, "");
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2500);
+
     try {
       const res = await fetch(`${baseUrl}/rest/v1/portfolio_data?select=id,data`, {
         method: "GET",
+        signal: controller.signal,
         headers: {
           apikey: config.supabaseAnonKey,
           Authorization: `Bearer ${config.supabaseAnonKey}`,
           "Content-Type": "application/json",
         },
       });
+      clearTimeout(timeoutId);
 
       if (!res.ok) return null;
 
@@ -114,7 +119,8 @@ export const cloudStore = {
 
       return bundle;
     } catch (err) {
-      console.warn("Cloud DB fetch failed, using local cache:", err);
+      clearTimeout(timeoutId);
+      console.warn("Cloud DB fetch timed out or failed, using local cache:", err);
       return null;
     }
   },

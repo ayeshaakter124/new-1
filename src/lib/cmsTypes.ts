@@ -224,7 +224,7 @@ export interface WebsiteContent {
 }
 
 export interface SectionConfig {
-  id: "hero" | "portfolio" | "services" | "whyHire" | "journey" | "brands" | "about" | "testimonials" | "contact";
+  id: "hero" | "portfolio" | "services" | "whyHire" | "journey" | "about" | "contact";
   name: string;
   visible: boolean;
   order: number;

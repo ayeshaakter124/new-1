@@ -41,30 +41,31 @@ export default function WhyHireMe() {
   ];
 
   return (
-    <section id="why-hire" className="py-20 bg-primary relative overflow-hidden">
+    <section id="why-hire" className="py-16 sm:py-24 bg-primary relative overflow-hidden">
       {/* Background Glower */}
-      <div className="absolute top-1/2 right-0 w-[400px] h-[400px] bg-panel/10 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/2 right-0 w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] bg-panel/10 rounded-full blur-[90px] sm:blur-[100px] pointer-events-none" />
       
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            className="text-left"
           >
-            <p className="text-accent font-bold tracking-[0.4em] text-[10px] mb-3 uppercase">
+            <p className="text-accent font-bold tracking-[0.4em] text-[9px] sm:text-[10px] mb-2 sm:mb-3 uppercase font-mono">
               {content.whyHireBadge || "Distinctive Advantages"}
             </p>
-            <h2 className="text-3xl md:text-5xl font-display font-bold mb-6 leading-tight text-text-pure tracking-tighter">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-medium mb-5 sm:mb-8 leading-tight text-text-pure tracking-tighter">
               {content.whyHireHeading || "I Don’t Just Edit, I Build Experiences"}
             </h2>
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {pillars.map((item, i) => (
-                <div key={i} className="flex gap-4 items-start group">
-                  <div className="w-1 h-12 bg-accent rounded-full shrink-0 glow-sm group-hover:h-14 transition-all duration-500" />
+                <div key={i} className="flex gap-3.5 sm:gap-4 items-start group">
+                  <div className="w-1 h-10 sm:h-12 bg-accent rounded-full shrink-0 glow-sm group-hover:h-14 transition-all duration-300 mt-1" />
                   <div>
-                    <h4 className="text-lg font-display font-bold mb-1.5 text-text-pure tracking-tight">{item.title}</h4>
-                    <p className="text-text-soft text-[13px] font-light leading-relaxed">{item.text}</p>
+                    <h3 className="text-base sm:text-lg font-display font-bold mb-1 text-text-pure tracking-tight">{item.title}</h3>
+                    <p className="text-text-soft text-xs sm:text-[13px] font-light leading-relaxed">{item.text}</p>
                   </div>
                 </div>
               ))}
@@ -72,27 +73,28 @@ export default function WhyHireMe() {
             
             <Link 
               to="/#contact" 
-              className="inline-flex items-center mt-10 px-8 py-4 bg-accent hover:bg-accent-hover text-primary font-bold rounded-full transition-all group glow-md hover:glow-lg hover:scale-105 active:scale-95 uppercase tracking-widest text-[10px]"
+              className="inline-flex items-center mt-6 sm:mt-10 px-6 py-3 sm:px-8 sm:py-4 bg-accent hover:bg-accent-hover text-primary font-bold rounded-full transition-all group glow-md hover:glow-lg active:scale-95 uppercase tracking-widest text-[9px] sm:text-[10px] shadow-lg shadow-accent/20"
             >
-              Direct Contact <span className="inline-block group-hover:translate-x-2 transition-transform ml-2">→</span>
+              Direct Contact <span className="inline-block group-hover:translate-x-1 transition-transform ml-2">→</span>
             </Link>
           </motion.div>
 
-          <div className="grid grid-cols-2 gap-4 md:gap-5">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-5 mt-4 lg:mt-0">
             {displayStats.map((stat) => {
               const Icon = ICON_MAP[stat.iconName] || TrendingUp;
               return (
                 <motion.div
                   key={stat.id || stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileHover={{ y: -5 }}
-                  className="glass p-5 md:p-8 rounded-[20px] md:rounded-[32px] group relative overflow-hidden glow-sm hover:glow-md active:scale-95 transition-all duration-500 border border-white/5 hover:border-accent/30"
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="glass p-4 sm:p-5 md:p-8 rounded-[18px] sm:rounded-[24px] md:rounded-[32px] group relative overflow-hidden glow-sm hover:glow-md active:scale-95 transition-all duration-300 border border-white/5 hover:border-accent/30"
                 >
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-panel/10 rounded-full -mr-5 -mt-5 blur-xl group-hover:bg-panel/20 transition-all duration-500" />
-                  <Icon className="text-accent mb-3 group-hover:scale-110 transition-transform" size={20} />
-                  <h3 className="text-xl md:text-4xl font-display font-bold mb-0.5 text-text-pure tracking-tighter">{stat.value}</h3>
-                  <p className="text-[8px] sm:text-[9px] font-bold text-text-soft mb-1 sm:mb-2 uppercase tracking-widest">{stat.label}</p>
-                  <p className="text-[8px] sm:text-[9px] text-text-muted uppercase tracking-[0.2em] font-medium leading-[1.4] sm:leading-relaxed">{stat.detail}</p>
+                  <div className="absolute top-0 right-0 w-12 sm:w-16 h-12 sm:h-16 bg-panel/10 rounded-full -mr-3 -mt-3 blur-xl group-hover:bg-panel/20 transition-all duration-300" />
+                  <Icon className="text-accent mb-2 sm:mb-3 group-hover:scale-110 transition-transform" size={18} />
+                  <h3 className="text-lg sm:text-2xl md:text-4xl font-display font-bold mb-0.5 text-text-pure tracking-tighter">{stat.value}</h3>
+                  <p className="text-[7px] sm:text-[9px] font-bold text-text-soft mb-1 uppercase tracking-widest font-mono">{stat.label}</p>
+                  <p className="text-[7px] sm:text-[9px] text-text-muted uppercase tracking-[0.15em] sm:tracking-[0.2em] font-medium leading-tight sm:leading-relaxed line-clamp-2">{stat.detail}</p>
                 </motion.div>
               );
             })}

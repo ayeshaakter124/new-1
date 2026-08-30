@@ -69,79 +69,81 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-20 relative overflow-hidden bg-primary">
+    <section id="contact" className="py-16 sm:py-24 relative overflow-hidden bg-primary">
       {/* Background Decor */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-panel/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-full h-[200px] bg-gradient-to-t from-accent/5 to-transparent pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-panel/5 rounded-full blur-[100px] sm:blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-[150px] sm:h-[200px] bg-gradient-to-t from-accent/5 to-transparent pointer-events-none" />
       
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-16">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
+            className="text-left"
           >
-            <p className="text-accent font-bold tracking-[0.4em] text-[9px] mb-6 uppercase font-mono">
+            <p className="text-accent font-bold tracking-[0.4em] text-[9px] sm:text-[10px] mb-3 sm:mb-6 uppercase font-mono">
               {contactInfo.subheading || content.contactBadge || "The Final Frontier"}
             </p>
-            <h2 className="text-2xl md:text-5xl lg:text-6xl font-display font-medium mb-6 sm:mb-10 leading-[1] text-text-pure tracking-tighter">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-medium mb-4 sm:mb-8 leading-[1.05] sm:leading-[1] text-text-pure tracking-tighter">
               {contactInfo.heading || content.contactHeading || "Let's Compose Your Masterpiece"}
             </h2>
-            <p className="text-xs md:text-lg text-text-soft mb-6 sm:mb-10 max-w-md leading-relaxed font-light">
+            <p className="text-xs sm:text-base md:text-lg text-text-soft mb-6 sm:mb-10 max-w-md leading-relaxed font-light">
               {contactInfo.description || content.contactDescription}
             </p>
             
-            <div className="space-y-4 sm:space-y-6">
+            {/* Quick Contact Buttons */}
+            <div className="space-y-3 sm:space-y-6">
               <a 
                 href={`https://wa.me/${cleanWhatsApp}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 sm:gap-6 group"
+                className="flex items-center gap-3.5 sm:gap-6 group glass p-3 sm:p-4 rounded-2xl border border-white/5 hover:border-accent/30 active:scale-[0.98] transition-all"
               >
-                <div className="w-10 h-10 sm:w-14 sm:h-14 bg-secondary rounded-[12px] sm:rounded-[16px] flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-primary transition-all duration-500 border border-accent/10 group-hover:scale-110 shadow-xl flex-shrink-0">
-                  <WhatsAppIcon size={18} className="sm:w-6 sm:h-6" />
+                <div className="w-10 h-10 sm:w-14 sm:h-14 bg-secondary rounded-xl sm:rounded-2xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-primary transition-all duration-300 border border-accent/15 group-hover:scale-105 shadow-lg flex-shrink-0">
+                  <WhatsAppIcon size={20} className="sm:w-6 sm:h-6" />
                 </div>
-                <div>
-                  <p className="text-[7px] sm:text-[9px] text-text-muted uppercase font-bold tracking-[0.3em] mb-1 font-mono">Direct Instant Chat</p>
-                  <p className="text-base sm:text-xl font-display font-bold text-text-pure tracking-tight group-hover:text-accent transition-colors duration-300 relative inline-block">
+                <div className="min-w-0 flex-1">
+                  <p className="text-[7px] sm:text-[9px] text-text-muted uppercase font-bold tracking-[0.25em] mb-0.5 font-mono">Direct Instant Chat</p>
+                  <p className="text-sm sm:text-xl font-display font-bold text-text-pure tracking-tight group-hover:text-accent transition-colors truncate">
                     WhatsApp Me ({contactInfo.whatsapp || "+880157735667"})
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300"></span>
                   </p>
                 </div>
               </a>
 
               <a 
                 href={`mailto:${contactInfo.email || "reehmanhridoy@gmail.com"}`}
-                className="flex items-center gap-3 sm:gap-6 group"
+                className="flex items-center gap-3.5 sm:gap-6 group glass p-3 sm:p-4 rounded-2xl border border-white/5 hover:border-accent/30 active:scale-[0.98] transition-all"
               >
-                <div className="w-10 h-10 sm:w-14 sm:h-14 bg-secondary rounded-[12px] sm:rounded-[16px] flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-primary transition-all duration-500 border border-accent/10 group-hover:scale-110 shadow-xl flex-shrink-0">
+                <div className="w-10 h-10 sm:w-14 sm:h-14 bg-secondary rounded-xl sm:rounded-2xl flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-primary transition-all duration-300 border border-accent/15 group-hover:scale-105 shadow-lg flex-shrink-0">
                   <Mail size={18} className="sm:w-6 sm:h-6" />
                 </div>
-                <div>
-                  <p className="text-[7px] sm:text-[9px] text-text-muted uppercase font-bold tracking-[0.3em] mb-1 font-mono">Direct Correspondence</p>
-                  <p className="text-base sm:text-xl font-display font-bold text-text-pure tracking-tight group-hover:text-accent transition-colors duration-300 relative inline-block truncate max-w-[280px] sm:max-w-none">
+                <div className="min-w-0 flex-1">
+                  <p className="text-[7px] sm:text-[9px] text-text-muted uppercase font-bold tracking-[0.25em] mb-0.5 font-mono">Direct Correspondence</p>
+                  <p className="text-sm sm:text-xl font-display font-bold text-text-pure tracking-tight group-hover:text-accent transition-colors truncate">
                     {contactInfo.email || "reehmanhridoy@gmail.com"}
-                    <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-accent group-hover:w-full transition-all duration-300"></span>
                   </p>
                 </div>
               </a>
             </div>
             
-            <div className="mt-8 sm:mt-12 flex items-center gap-3 sm:gap-4">
+            {/* Social Icons Row */}
+            <div className="mt-6 sm:mt-10 flex items-center gap-2.5 sm:gap-4">
               {socialLinks.map((platform) => (
                 <a 
                   key={platform.id || platform.platform} 
                   href={platform.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 sm:w-12 sm:h-12 glass rounded-xl sm:rounded-2xl flex items-center justify-center group relative overflow-hidden transition-all duration-500 border border-white/5 hover:border-accent/40 hover:glow-md cursor-pointer"
+                  className="w-10 h-10 sm:w-12 sm:h-12 glass rounded-xl sm:rounded-2xl flex items-center justify-center group relative overflow-hidden transition-all duration-300 border border-white/5 hover:border-accent/40 active:scale-90"
+                  aria-label={platform.platform}
                 >
                   <div 
-                    className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 blur-xl pointer-events-none" 
+                    className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 blur-xl pointer-events-none" 
                     style={{ backgroundColor: platform.glowColor || "rgba(163, 133, 96, 0.4)" }}
                   />
                   <div 
-                    className="w-5 h-5 sm:w-6 sm:h-6 bg-text-soft group-hover:bg-accent transition-all duration-500 relative z-10" 
+                    className="w-4 h-4 sm:w-5 sm:h-5 bg-text-soft group-hover:bg-accent transition-all duration-300 relative z-10" 
                     style={{
                       maskImage: `url(${platform.logo})`,
                       WebkitMaskImage: `url(${platform.logo})`,
@@ -158,17 +160,18 @@ export default function Contact() {
             </div>
           </motion.div>
 
+          {/* Form Card */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="glass p-5 md:p-8 rounded-[20px] md:rounded-[32px] border border-accent/10 glow-sm hover:glow-md transition-all duration-500 bg-secondary/20"
+            className="glass p-5 sm:p-8 rounded-[20px] sm:rounded-[32px] border border-accent/15 glow-sm hover:glow-md transition-all duration-500 bg-secondary/20"
           >
-            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 text-left">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 text-left">
               {submitted && (
                 <div className="p-4 bg-accent/20 border border-accent/40 rounded-xl space-y-3 animate-fadeIn">
-                  <div className="flex items-center gap-3 text-accent text-xs font-bold">
-                    <CheckCircle2 size={18} className="shrink-0" />
+                  <div className="flex items-center gap-2.5 text-accent text-xs font-bold">
+                    <CheckCircle2 size={16} className="shrink-0" />
                     <span>Your inquiry has been submitted!</span>
                   </div>
                   {lastSubmission && (
@@ -177,7 +180,7 @@ export default function Contact() {
                         href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(`Hi Rehman! My name is ${lastSubmission.name} (${lastSubmission.email}). I'm reaching out regarding ${lastSubmission.ventureNature}: ${lastSubmission.message}`)}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="px-3 py-1.5 bg-accent text-primary text-[10px] font-bold rounded-lg flex items-center gap-1.5 hover:bg-accent-hover transition-all"
+                        className="px-3 py-1.5 bg-accent text-primary text-[10px] font-bold rounded-lg flex items-center gap-1.5 hover:bg-accent-hover transition-all shadow-sm"
                       >
                         <MessageCircle size={12} /> Send via WhatsApp
                       </a>
@@ -192,38 +195,38 @@ export default function Contact() {
                 </div>
               )}
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-                <div className="space-y-2">
-                  <label className="text-[7px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] ml-2 font-mono">Identity</label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-5">
+                <div className="space-y-1.5">
+                  <label className="text-[7px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] ml-1 font-mono">Identity</label>
                   <input 
                     type="text" 
                     required
                     placeholder="Signature Name" 
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full bg-primary/50 border border-accent/10 rounded-lg sm:rounded-xl px-4 py-3 sm:px-6 sm:py-4 focus:outline-none focus:border-accent/60 focus:bg-primary/80 transition-all text-text-pure placeholder:text-text-muted/50 font-light text-[12px] sm:text-[13px]"
+                    className="w-full bg-primary/60 border border-accent/15 rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 focus:outline-none focus:border-accent focus:bg-primary/90 transition-all text-text-pure placeholder:text-text-muted/40 font-light text-xs sm:text-sm"
                   />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-[7px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] ml-2 font-mono">Correspondence</label>
+                <div className="space-y-1.5">
+                  <label className="text-[7px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] ml-1 font-mono">Correspondence</label>
                   <input 
                     type="email" 
                     required
                     placeholder="Email Address" 
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full bg-primary/50 border border-accent/10 rounded-lg sm:rounded-xl px-4 py-3 sm:px-6 sm:py-4 focus:outline-none focus:border-accent/60 focus:bg-primary/80 transition-all text-text-pure placeholder:text-text-muted/50 font-light text-[12px] sm:text-[13px]"
+                    className="w-full bg-primary/60 border border-accent/15 rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 focus:outline-none focus:border-accent focus:bg-primary/90 transition-all text-text-pure placeholder:text-text-muted/40 font-light text-xs sm:text-sm"
                   />
                 </div>
               </div>
               
-              <div className="space-y-2">
-                <label className="text-[7px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] ml-2 font-mono">Venture Nature</label>
+              <div className="space-y-1.5">
+                <label className="text-[7px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] ml-1 font-mono">Venture Nature</label>
                 <div className="relative group">
                   <select 
                     value={formData.ventureNature}
                     onChange={(e) => setFormData({ ...formData, ventureNature: e.target.value })}
-                    className="w-full bg-primary/50 border border-accent/10 rounded-lg sm:rounded-xl px-4 py-3 sm:px-6 sm:py-4 focus:outline-none focus:border-accent/60 focus:bg-primary/80 transition-all appearance-none cursor-pointer text-text-pure font-light text-[12px] sm:text-[13px]"
+                    className="w-full bg-primary/60 border border-accent/15 rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 focus:outline-none focus:border-accent focus:bg-primary/90 transition-all appearance-none cursor-pointer text-text-pure font-light text-xs sm:text-sm"
                   >
                     <option className="bg-primary text-text-pure">Commercial Masterpiece</option>
                     <option className="bg-primary text-text-pure">Viral Reels & Shorts</option>
@@ -232,25 +235,29 @@ export default function Contact() {
                     <option className="bg-primary text-text-pure">Bespoke Inquiry</option>
                   </select>
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-accent">
-                    <ChevronRight className="rotate-90 w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                    <ChevronRight className="rotate-90 w-3.5 h-3.5" />
                   </div>
                 </div>
               </div>
               
-              <div className="space-y-2">
-                <label className="text-[7px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] ml-2 font-mono">Creative Intent</label>
+              <div className="space-y-1.5">
+                <label className="text-[7px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] ml-1 font-mono">Creative Intent</label>
                 <textarea 
                   rows={3}
                   required
                   placeholder="Elucidate your vision..." 
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full bg-primary/50 border border-accent/10 rounded-lg sm:rounded-xl px-4 py-3 sm:px-6 sm:py-4 focus:outline-none focus:border-accent/60 focus:bg-primary/80 transition-all resize-none text-text-pure placeholder:text-text-muted/50 font-light text-[12px] sm:text-[13px]"
+                  className="w-full bg-primary/60 border border-accent/15 rounded-xl px-4 py-3 sm:px-5 sm:py-3.5 focus:outline-none focus:border-accent focus:bg-primary/90 transition-all resize-none text-text-pure placeholder:text-text-muted/40 font-light text-xs sm:text-sm"
                 />
               </div>
               
-              <button type="submit" className="w-full py-3.5 sm:py-5 bg-accent hover:bg-accent-hover text-primary font-bold rounded-full transition-all duration-500 flex items-center justify-center gap-2 sm:gap-3 glow-sm hover:glow-md shadow-2xl hover:-translate-y-1 uppercase tracking-[0.3em] text-[8px] sm:text-[10px]">
-                {contactInfo.ctaText || "Inaugurate Project"} <Send size={14} className="group-hover:translate-x-1 transition-transform sm:w-4 sm:h-4" />
+              <button 
+                type="submit" 
+                className="w-full py-3.5 sm:py-4 bg-accent hover:bg-accent-hover text-primary font-bold rounded-full transition-all duration-300 flex items-center justify-center gap-2 glow-md shadow-xl shadow-accent/20 uppercase tracking-[0.25em] text-[9px] sm:text-[10px] active:scale-[0.98]"
+              >
+                <span>{contactInfo.ctaText || "Inaugurate Project"}</span>
+                <Send size={13} className="translate-x-0.5" />
               </button>
             </form>
           </motion.div>

@@ -34,20 +34,20 @@ export default function About() {
     : aboutPortrait;
 
   return (
-    <section id="about" className="py-20 md:py-32 relative overflow-hidden bg-primary">
+    <section id="about" className="py-16 sm:py-24 md:py-32 relative overflow-hidden bg-primary">
       {/* Background Glower */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-panel/5 rounded-full blur-[150px] pointer-events-none" />
       
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 items-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 items-center">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="relative max-w-sm mx-auto lg:max-w-none"
+            className="relative max-w-[280px] sm:max-w-sm mx-auto lg:max-w-none"
           >
-            <div className="absolute inset-0 bg-accent/20 blur-[100px] rounded-full z-0 opacity-10" />
-            <div className="relative z-10 aspect-[4/5] rounded-[2rem] overflow-hidden border border-white/10 glass-dark bg-secondary/80 glow-lg group">
+            <div className="absolute inset-0 bg-accent/20 blur-[80px] sm:blur-[100px] rounded-full z-0 opacity-15" />
+            <div className="relative z-10 aspect-[4/5] rounded-[24px] sm:rounded-[2rem] overflow-hidden border border-white/10 glass-dark bg-secondary/80 glow-lg group">
               <img 
                 src={displayPortrait}
                 alt={`${profile.name} - Creative Director`} 
@@ -60,45 +60,46 @@ export default function About() {
             </div>
             
             {/* Experience Tag */}
-            <div className="absolute -bottom-3 -right-3 sm:-bottom-6 sm:-right-6 glass p-3 sm:p-6 rounded-[16px] sm:rounded-[32px] z-20 border border-accent/20 glow-md text-center sm:text-left">
-              <p className="text-xl sm:text-4xl font-display font-bold text-accent tracking-tighter leading-none">{yearsExp}</p>
-              <p className="text-[7px] sm:text-[9px] font-bold text-text-soft uppercase tracking-[0.3em] leading-tight mt-1">Years Of<br className="hidden sm:block" />Experience</p>
+            <div className="absolute -bottom-2 -right-2 sm:-bottom-5 sm:-right-5 glass p-2.5 sm:p-5 rounded-2xl sm:rounded-[32px] z-20 border border-accent/20 glow-md text-center sm:text-left shadow-xl">
+              <p className="text-lg sm:text-3xl font-display font-bold text-accent tracking-tighter leading-none">{yearsExp}</p>
+              <p className="text-[7px] sm:text-[9px] font-bold text-text-soft uppercase tracking-[0.25em] sm:tracking-[0.3em] leading-tight mt-1 font-mono">Years Of<br className="hidden sm:block" /> Experience</p>
             </div>
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="flex flex-col justify-center"
+            className="flex flex-col justify-center text-left"
           >
-            <p className="text-accent font-bold tracking-[0.4em] text-[9px] mb-4 uppercase">
+            <p className="text-accent font-bold tracking-[0.4em] text-[9px] sm:text-[10px] mb-2 sm:mb-4 uppercase font-mono">
               {content.aboutBadge || "The Creative Narrative"}
             </p>
-            <h2 className="text-2xl md:text-5xl font-display font-medium mb-4 sm:mb-6 text-text-pure tracking-tighter leading-[1.1]">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-medium mb-3 sm:mb-6 text-text-pure tracking-tighter leading-[1.1]">
               {content.aboutHeading || "Mastering the Cinematic Art of Storytelling"}
             </h2>
-            <p className="text-xs md:text-lg text-text-soft mb-6 sm:mb-10 leading-relaxed font-light">
+            <p className="text-xs sm:text-base md:text-lg text-text-soft mb-6 sm:mb-10 leading-relaxed font-light">
               {profile.fullBio || content.aboutDescription}
             </p>
             
-            <div className="grid grid-cols-3 gap-3 sm:gap-4">
+            {/* Skills Badges */}
+            <div className="grid grid-cols-3 gap-2 sm:gap-3.5">
               {skills.map((skill, i) => (
                 <motion.div
                   key={skill.id || skill.name}
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: i * 0.08 }}
-                  whileHover={{ y: -5 }}
-                  className="glass p-3 sm:p-5 rounded-[12px] sm:rounded-[20px] flex flex-col items-center justify-center gap-2 group transition-all duration-500 border border-white/5 hover:border-accent/30 relative overflow-hidden"
+                  transition={{ delay: i * 0.06 }}
+                  whileHover={{ y: -3 }}
+                  className="glass p-2.5 sm:p-4 rounded-xl sm:rounded-2xl flex flex-col items-center justify-center gap-1.5 sm:gap-2 group transition-all duration-300 border border-white/5 hover:border-accent/30 relative overflow-hidden active:scale-95"
                 >
                   <div 
-                    className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 blur-xl pointer-events-none" 
+                    className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 blur-xl pointer-events-none" 
                     style={{ backgroundColor: skill.glowColor || "rgba(163, 133, 96, 0.3)" }}
                   />
                   <div 
-                    className="w-5 h-5 sm:w-8 sm:h-8 bg-text-muted group-hover:bg-accent transition-all duration-500 relative z-10" 
+                    className="w-5 h-5 sm:w-7 sm:h-7 bg-text-muted group-hover:bg-accent transition-all duration-300 relative z-10" 
                     style={{
                       maskImage: `url(${skill.logo})`,
                       WebkitMaskImage: `url(${skill.logo})`,
@@ -110,19 +111,22 @@ export default function About() {
                       WebkitMaskPosition: 'center'
                     }}
                   />
-                  <span className="text-[7px] sm:text-[9px] font-bold text-text-muted group-hover:text-text-pure uppercase tracking-widest relative z-10 transition-colors text-center">{skill.name}</span>
+                  <span className="text-[7px] sm:text-[9px] font-bold text-text-muted group-hover:text-text-pure uppercase tracking-wider relative z-10 transition-colors text-center font-mono truncate max-w-full">
+                    {skill.name}
+                  </span>
                 </motion.div>
               ))}
             </div>
 
-            <div className="mt-8 sm:mt-10 flex flex-wrap gap-8 sm:gap-10">
+            {/* Quick Metrics */}
+            <div className="mt-6 sm:mt-10 flex flex-wrap gap-6 sm:gap-10">
               <div>
-                <p className="text-xl sm:text-2xl font-display font-bold text-text-pure tracking-tighter text-glow">{projectsCount}</p>
-                <p className="text-[8px] sm:text-[9px] text-text-muted uppercase font-bold tracking-[0.3em] mt-1">Projects Done</p>
+                <p className="text-xl sm:text-3xl font-display font-bold text-text-pure tracking-tighter text-glow">{projectsCount}</p>
+                <p className="text-[8px] sm:text-[9px] text-text-muted uppercase font-bold tracking-[0.25em] mt-0.5 font-mono">Projects Done</p>
               </div>
               <div>
-                <p className="text-xl sm:text-2xl font-display font-bold text-text-pure tracking-tighter text-glow">{happyClientsCount}</p>
-                <p className="text-[8px] sm:text-[9px] text-text-muted uppercase font-bold tracking-[0.3em] mt-1">Happy Clients</p>
+                <p className="text-xl sm:text-3xl font-display font-bold text-text-pure tracking-tighter text-glow">{happyClientsCount}</p>
+                <p className="text-[8px] sm:text-[9px] text-text-muted uppercase font-bold tracking-[0.25em] mt-0.5 font-mono">Happy Clients</p>
               </div>
             </div>
           </motion.div>

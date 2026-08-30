@@ -26,42 +26,42 @@ export default function Footer() {
   const restName = nameParts.slice(1).join(" ") || "HRIDOY";
 
   return (
-    <footer className="py-16 border-t border-accent/10 bg-primary overflow-hidden relative">
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-10 mb-12">
+    <footer className="py-12 sm:py-16 border-t border-accent/10 bg-primary overflow-hidden relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-10 mb-8 sm:mb-12">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 bg-accent rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 glow-sm">
-              <Play className="text-secondary fill-secondary w-5 h-5 translate-x-0.5" />
+          <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform duration-300 glow-sm shadow-md">
+              <Play className="text-secondary fill-secondary w-3.5 h-3.5 sm:w-5 sm:h-5 translate-x-0.5" />
             </div>
-            <span className="font-display font-medium text-xl tracking-tighter text-text-pure uppercase">
-              {firstName}<span className="text-accent font-light ml-[8px]">{restName}</span>
+            <span className="font-display font-medium text-lg sm:text-xl tracking-tighter text-text-pure uppercase">
+              {firstName}<span className="text-accent font-light ml-1 sm:ml-2">{restName}</span>
             </span>
           </Link>
 
           {/* Links */}
-          <div className="flex flex-wrap justify-center gap-8 text-[9px] font-bold text-text-muted uppercase tracking-[0.4em]">
-            <Link to="/#services" className="hover:text-accent transition-all duration-300">Expertise</Link>
-            <Link to="/work" className="hover:text-accent transition-all duration-300">Showcase</Link>
-            <Link to="/#about" className="hover:text-accent transition-all duration-300">The Vision</Link>
-            <Link to="/#contact" className="hover:text-accent transition-all duration-300">Connection</Link>
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-8 text-[8px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] sm:tracking-[0.4em]">
+            <Link to="/#services" className="hover:text-accent transition-colors py-1">Reviews</Link>
+            <Link to="/work" className="hover:text-accent transition-colors py-1">Showcase</Link>
+            <Link to="/#about" className="hover:text-accent transition-colors py-1">The Vision</Link>
+            <Link to="/#contact" className="hover:text-accent transition-colors py-1">Connection</Link>
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center justify-between gap-5 pt-8 border-t border-accent/5">
-          <p className="text-[8px] sm:text-[9px] text-text-muted font-bold tracking-[0.2em] uppercase text-center md:text-left">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-3 sm:gap-5 pt-6 sm:pt-8 border-t border-accent/5">
+          <p className="text-[7px] sm:text-[9px] text-text-muted font-bold tracking-[0.15em] sm:tracking-[0.2em] uppercase text-center md:text-left font-mono">
             {content.footerCopyright || `© 2026 ${profile.name.toUpperCase()}. All Rights Reserved.`}{" "}
             <span className="text-accent">{content.footerTagline || "Crafting Excellence."}</span>
           </p>
-          <div className="flex items-center gap-5 sm:gap-6 text-[8px] sm:text-[9px] text-text-muted font-bold uppercase tracking-[0.2em]">
-            <a href="#" className="hover:text-text-pure transition-all duration-300">Privacy</a>
-            <a href="#" className="hover:text-text-pure transition-all duration-300">Terms</a>
+          <div className="flex items-center gap-4 sm:gap-6 text-[7px] sm:text-[9px] text-text-muted font-bold uppercase tracking-[0.2em] font-mono">
+            <a href="#" className="hover:text-text-pure transition-colors">Privacy</a>
+            <a href="#" className="hover:text-text-pure transition-colors">Terms</a>
           </div>
         </div>
       </div>
       
       {/* Decorative Glow */}
-      <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-[1000px] h-[300px] bg-accent/5 blur-[120px] rounded-full pointer-events-none opacity-50" />
+      <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-[600px] sm:w-[1000px] h-[200px] sm:h-[300px] bg-accent/5 blur-[100px] sm:blur-[120px] rounded-full pointer-events-none opacity-50" />
     </footer>
   );
 }
