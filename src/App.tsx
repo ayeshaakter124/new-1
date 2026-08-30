@@ -109,6 +109,10 @@ function DynamicHomeSections() {
     }
   };
 
+  const displaySections = sections.length > 0 
+    ? sections 
+    : cmsStore.getSections();
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -116,7 +120,7 @@ function DynamicHomeSections() {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {sections.map((section) => renderSection(section.id))}
+      {displaySections.map((section) => renderSection(section.id))}
     </motion.div>
   );
 }

@@ -36,6 +36,21 @@ export function SectionManager({ onAddToast }: SectionManagerProps) {
     onAddToast("info", "Section order updated.");
   };
 
+  const handleResetDefaults = () => {
+    const defaultSections = [
+      { id: "hero", name: "Hero / Introduction", visible: true, order: 1 },
+      { id: "portfolio", name: "Portfolio Showcase", visible: true, order: 2 },
+      { id: "services", name: "Client Video Reviews", visible: true, order: 3 },
+      { id: "whyHire", name: "Why Hire Me / Key Stats", visible: true, order: 4 },
+      { id: "journey", name: "Career Journey Timeline", visible: true, order: 5 },
+      { id: "about", name: "About Me & Narrative", visible: true, order: 6 },
+      { id: "contact", name: "Contact & Connection", visible: true, order: 7 },
+    ];
+    setSections(defaultSections);
+    cmsStore.saveSections(defaultSections);
+    onAddToast("success", "Sections reset to standard portfolio architecture! 🔄");
+  };
+
   const handleSaveAll = () => {
     setIsSaving(true);
     cmsStore.saveSections(sections);
@@ -56,14 +71,23 @@ export function SectionManager({ onAddToast }: SectionManagerProps) {
           </p>
         </div>
 
-        <button
-          onClick={handleSaveAll}
-          disabled={isSaving}
-          className="px-6 py-3 rounded-2xl bg-accent hover:bg-accent-hover text-primary font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-accent/20 transition-all shrink-0"
-        >
-          <Save size={15} />
-          <span>{isSaving ? "Saving..." : "Save Layout"}</span>
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={handleResetDefaults}
+            className="px-4 py-3 rounded-2xl glass hover:bg-white/10 text-text-soft font-bold text-xs uppercase tracking-wider transition-all border border-white/10"
+          >
+            Reset Defaults
+          </button>
+          <button
+            onClick={handleSaveAll}
+            disabled={isSaving}
+            className="px-6 py-3 rounded-2xl bg-accent hover:bg-accent-hover text-primary font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-accent/20 transition-all shrink-0"
+          >
+            <Save size={15} />
+            <span>{isSaving ? "Saving..." : "Save Layout"}</span>
+          </button>
+        </div>
       </div>
 
       {/* Sections List */}

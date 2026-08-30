@@ -29,7 +29,9 @@ export default function About() {
   const projectsCount = stats.find(s => s.label.toLowerCase().includes("project"))?.value || "183+";
   const happyClientsCount = stats.find(s => s.label.toLowerCase().includes("client"))?.value || "47+";
 
-  const displayPortrait = profile.portraitUrl && profile.portraitUrl.trim() !== ""
+  const displayPortrait = profile.aboutPortraitUrl && profile.aboutPortraitUrl.trim() !== ""
+    ? profile.aboutPortraitUrl
+    : profile.portraitUrl && profile.portraitUrl.trim() !== ""
     ? profile.portraitUrl
     : aboutPortrait;
 
@@ -43,14 +45,16 @@ export default function About() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="relative max-w-[280px] sm:max-w-sm mx-auto lg:max-w-none"
+            viewport={{ once: true, amount: 0.1 }}
+            className="relative max-w-[280px] sm:max-w-sm mx-auto lg:max-w-none w-full"
           >
-            <div className="absolute inset-0 bg-accent/20 blur-[80px] sm:blur-[100px] rounded-full z-0 opacity-15" />
-            <div className="relative z-10 aspect-[4/5] rounded-[24px] sm:rounded-[2rem] overflow-hidden border border-white/10 glass-dark bg-secondary/80 glow-lg group">
+            <div className="absolute inset-0 bg-accent/20 blur-[80px] sm:blur-[100px] rounded-full z-0 opacity-15 pointer-events-none" />
+            <div className="relative z-10 aspect-[4/5] w-full min-h-[320px] sm:min-h-[420px] rounded-[24px] sm:rounded-[2rem] overflow-hidden border border-white/10 glass-dark bg-secondary/80 glow-lg group flex items-center justify-center">
               <img 
                 src={displayPortrait}
-                alt={`${profile.name} - Creative Director`} 
+                alt={`${profile.name || "Rehman Hridoy"} - Creative Director`} 
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-105 select-none" 
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = aboutPortrait;

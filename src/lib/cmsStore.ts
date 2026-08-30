@@ -46,6 +46,7 @@ export const DEFAULT_CMS_STATE: CMSState = {
     phone: "+880157735667",
     whatsapp: "+880157735667",
     portraitUrl: "",
+    aboutPortraitUrl: "",
     coverImageUrl: "",
     resumeUrl: "",
     ctaPrimaryText: "Hire Me Now",
@@ -714,7 +715,10 @@ export const cmsStore = {
   },
 
   // --- Entity Helpers ---
-  getProfile(): ProfileHeroData { return this.get("profile"); },
+  getProfile(): ProfileHeroData { 
+    const saved = this.get("profile");
+    return { ...DEFAULT_CMS_STATE.profile, ...(saved || {}) };
+  },
   saveProfile(data: Partial<ProfileHeroData>): ProfileHeroData {
     const current = this.getProfile();
     const updated = { ...current, ...data };
@@ -1023,14 +1027,20 @@ export const cmsStore = {
     return this.set("socialLinks", filtered);
   },
 
-  getContactInfo(): ContactInfo { return this.get("contactInfo"); },
+  getContactInfo(): ContactInfo { 
+    const saved = this.get("contactInfo");
+    return { ...DEFAULT_CMS_STATE.contactInfo, ...(saved || {}) };
+  },
   saveContactInfo(data: Partial<ContactInfo>): ContactInfo {
     const current = this.getContactInfo();
     const updated = { ...current, ...data };
     return this.set("contactInfo", updated);
   },
 
-  getContent(): WebsiteContent { return this.get("content"); },
+  getContent(): WebsiteContent { 
+    const saved = this.get("content");
+    return { ...DEFAULT_CMS_STATE.content, ...(saved || {}) };
+  },
   saveContent(data: Partial<WebsiteContent>): WebsiteContent {
     const current = this.getContent();
     const updated = { ...current, ...data };
@@ -1038,10 +1048,38 @@ export const cmsStore = {
   },
 
   getSections(): SectionConfig[] { 
-    const raw: any[] = this.get("sections") || [];
-    return raw
-      .filter((s) => s.id !== "brands" && s.id !== "testimonials")
-      .map((s, idx) => ({ ...s, order: s.order || idx + 1 }));
+    const raw: any = this.get("sections");
+    const defaultSections = DEFAULT_CMS_STATE.sections;
+    
+    // Create map of existing saved sections
+    const map = new Map<string, SectionConfig>();
+    if (Array.isArray(raw) && raw.length > 0) {
+      raw
+        .filter((s) => s && s.id && s.id !== "brands" && s.id !== "testimonials")
+        .forEach((s) => map.set(s.id, s));
+    }
+    
+    // Ensure all canonical sections exist
+    const merged: SectionConfig[] = defaultSections.map((def, idx) => {
+      const existing = map.get(def.id);
+      if (existing) {
+        return {
+          id: def.id,
+          name: existing.name || def.name,
+          visible: existing.visible !== undefined ? existing.visible : def.visible,
+          order: typeof existing.order === "number" ? existing.order : idx + 1,
+        };
+      }
+      return { ...def, order: idx + 1 };
+    });
+
+    // Check if at least one section is visible; if none are visible (corrupted state), enable defaults
+    const anyVisible = merged.some((s) => s.visible);
+    if (!anyVisible) {
+      return defaultSections;
+    }
+
+    return merged.sort((a, b) => a.order - b.order);
   },
   saveSections(sections: SectionConfig[]): SectionConfig[] {
     const cleaned = sections.filter((s) => s.id !== ("brands" as any) && s.id !== ("testimonials" as any));
@@ -1052,7 +1090,10 @@ export const cmsStore = {
     return this.set("sections", list);
   },
 
-  getSeo(): SeoSettings { return this.get("seo"); },
+  getSeo(): SeoSettings { 
+    const saved = this.get("seo");
+    return { ...DEFAULT_CMS_STATE.seo, ...(saved || {}) };
+  },
   saveSeo(data: Partial<SeoSettings>): SeoSettings {
     const current = this.getSeo();
     const updated = { ...current, ...data };
@@ -1121,8 +1162,19 @@ export const cmsStore = {
     ];
 
     keys.forEach(k => {
-      if (bundle[k] !== undefined) {
-        localStorage.setItem(`${CMS_STORAGE_PREFIX}${k}`, JSON.stringify(bundle[k]));
+      if (bundle[k] !== undefined && bundle[k] !== null) {
+        // Validate array keys to ensure they are not corrupted or empty unless intended
+        if (Array.isArray(DEFAULT_CMS_STATE[k])) {
+          if (Array.isArray(bundle[k]) && bundle[k].length > 0) {
+            localStorage.setItem(`${CMS_STORAGE_PREFIX}${k}`, JSON.stringify(bundle[k]));
+          }
+        } else if (typeof DEFAULT_CMS_STATE[k] === "object") {
+          // Merge with default object so new fields are never lost
+          const merged = { ...(DEFAULT_CMS_STATE[k] as any), ...bundle[k] };
+          localStorage.setItem(`${CMS_STORAGE_PREFIX}${k}`, JSON.stringify(merged));
+        } else {
+          localStorage.setItem(`${CMS_STORAGE_PREFIX}${k}`, JSON.stringify(bundle[k]));
+        }
       }
     });
 

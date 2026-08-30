@@ -22,6 +22,7 @@ export interface ProfileHeroData {
   phone: string;
   whatsapp: string;
   portraitUrl: string;
+  aboutPortraitUrl?: string;
   coverImageUrl?: string;
   resumeUrl?: string;
   ctaPrimaryText: string;

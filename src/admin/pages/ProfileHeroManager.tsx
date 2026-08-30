@@ -76,9 +76,16 @@ export function ProfileHeroManager({ onAddToast }: ProfileHeroManagerProps) {
             </h3>
 
             <ImagePreviewInput
-              label="Profile Portrait URL"
+              label="Hero Portrait Photo URL"
               value={profile.portraitUrl}
               onChange={(url) => setProfile({ ...profile, portraitUrl: url })}
+              aspect="portrait"
+            />
+
+            <ImagePreviewInput
+              label="About Section Portrait Photo URL (Optional)"
+              value={profile.aboutPortraitUrl || ""}
+              onChange={(url) => setProfile({ ...profile, aboutPortraitUrl: url })}
               aspect="portrait"
             />
 

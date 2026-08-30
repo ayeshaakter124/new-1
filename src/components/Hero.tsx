@@ -98,9 +98,20 @@ export default function Hero() {
           {/* Social Proof */}
           <div className="mt-8 sm:mt-12 flex items-center gap-3 sm:gap-6">
             <div className="flex -space-x-2.5 sm:-space-x-3">
-              {[1, 2, 3, 4].map((i) => (
+              {[
+                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80",
+                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80",
+                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80",
+                "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80"
+              ].map((src, i) => (
                 <div key={i} className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-primary overflow-hidden bg-secondary shadow-md">
-                  <img src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="Client" className="w-full h-full object-cover" />
+                  <img 
+                    src={src} 
+                    alt="Client" 
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover" 
+                  />
                 </div>
               ))}
             </div>

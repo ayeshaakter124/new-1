@@ -138,9 +138,13 @@ export const cloudStore = {
       updated_at: new Date().toISOString(),
     }));
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 6000);
+
     try {
       const res = await fetch(`${baseUrl}/rest/v1/portfolio_data`, {
         method: "POST",
+        signal: controller.signal,
         headers: {
           apikey: config.supabaseAnonKey,
           Authorization: `Bearer ${config.supabaseAnonKey}`,
@@ -149,6 +153,7 @@ export const cloudStore = {
         },
         body: JSON.stringify(records),
       });
+      clearTimeout(timeoutId);
 
       if (res.ok) {
         this.saveConfig({ lastSyncedAt: new Date().toISOString() });
@@ -158,6 +163,7 @@ export const cloudStore = {
         return { success: false, message: `Push failed (Status ${res.status}): ${text}` };
       }
     } catch (err: any) {
+      clearTimeout(timeoutId);
       return { success: false, message: `Error syncing to cloud: ${err.message}` };
     }
   },
@@ -167,9 +173,13 @@ export const cloudStore = {
     if (!config.autoSync || !config.supabaseUrl || !config.supabaseAnonKey) return false;
 
     const baseUrl = config.supabaseUrl.replace(/\/$/, "");
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
+
     try {
       await fetch(`${baseUrl}/rest/v1/portfolio_data`, {
         method: "POST",
+        signal: controller.signal,
         headers: {
           apikey: config.supabaseAnonKey,
           Authorization: `Bearer ${config.supabaseAnonKey}`,
@@ -180,8 +190,10 @@ export const cloudStore = {
           { id: key, data, updated_at: new Date().toISOString() }
         ]),
       });
+      clearTimeout(timeoutId);
       return true;
     } catch (err) {
+      clearTimeout(timeoutId);
       console.warn(`Background sync failed for ${key}:`, err);
       return false;
     }
