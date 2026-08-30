@@ -32,13 +32,21 @@ function RouteLoadingFallback() {
 
 function CloudDataLoader() {
   useEffect(() => {
-    // Initial non-blocking global fetch from Cloud Database
-    cmsStore.loadFromCloud().then(() => {
-      const seo = cmsStore.getSeo();
-      if (seo?.siteTitle) {
-        document.title = seo.siteTitle;
-      }
-    });
+    // Non-blocking background sync after initial page paint
+    const sync = () => {
+      cmsStore.loadFromCloud().then(() => {
+        const seo = cmsStore.getSeo();
+        if (seo?.siteTitle) {
+          document.title = seo.siteTitle;
+        }
+      });
+    };
+
+    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+      (window as any).requestIdleCallback(sync);
+    } else {
+      setTimeout(sync, 200);
+    }
   }, []);
 
   return null;

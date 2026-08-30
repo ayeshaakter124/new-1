@@ -95,7 +95,9 @@ export const cloudStore = {
 
     const baseUrl = config.supabaseUrl.replace(/\/$/, "");
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 2500);
+    const timeoutId = setTimeout(() => {
+      try { controller.abort(); } catch {}
+    }, 1500);
 
     try {
       const res = await fetch(`${baseUrl}/rest/v1/portfolio_data?select=id,data`, {
@@ -120,7 +122,6 @@ export const cloudStore = {
       return bundle;
     } catch (err) {
       clearTimeout(timeoutId);
-      console.warn("Cloud DB fetch timed out or failed, using local cache:", err);
       return null;
     }
   },
