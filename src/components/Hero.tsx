@@ -60,15 +60,15 @@ export default function Hero() {
           </div>
 
           {/* Main Hero Headline */}
-          <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-medium leading-[1.05] sm:leading-[0.9] mb-4 sm:mb-8 tracking-tighter text-text-pure">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-extrabold leading-[1.02] sm:leading-[0.92] mb-5 sm:mb-8 tracking-[-0.03em] text-text-pure">
             {content.heroHeadingLine1 || "Creative"}{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-text-pure via-text-pure to-accent font-light">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-text-pure via-accent to-accent font-extrabold">
               {content.heroHeadingLine2 || "Visuals"}
             </span> <br className="hidden sm:inline" />
             {content.heroHeadingLine3 || "for Modern Brands"}
           </h1>
           
-          <p className="text-xs sm:text-base md:text-lg text-text-soft mb-6 sm:mb-10 max-w-xl leading-relaxed font-light">
+          <p className="text-xs sm:text-base md:text-lg text-text-soft mb-6 sm:mb-10 max-w-xl leading-relaxed font-normal">
             {profile.shortBio || content.heroDescription}
           </p>
           

@@ -34,13 +34,13 @@ export default function Footer() {
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform duration-300 glow-sm shadow-md">
               <Play className="text-secondary fill-secondary w-3.5 h-3.5 sm:w-5 sm:h-5 translate-x-0.5" />
             </div>
-            <span className="font-display font-medium text-lg sm:text-xl tracking-tighter text-text-pure uppercase">
-              {firstName}<span className="text-accent font-light ml-1 sm:ml-2">{restName}</span>
+            <span className="font-display font-extrabold text-lg sm:text-xl tracking-tight text-text-pure uppercase">
+              {firstName}<span className="text-accent font-semibold ml-1 sm:ml-2">{restName}</span>
             </span>
           </Link>
 
           {/* Links */}
-          <div className="flex flex-wrap justify-center gap-4 sm:gap-8 text-[8px] sm:text-[9px] font-bold text-text-muted uppercase tracking-[0.3em] sm:tracking-[0.4em]">
+          <div className="flex flex-wrap justify-center gap-4 sm:gap-8 text-[8px] sm:text-[9px] font-mono font-bold text-text-muted uppercase tracking-[0.25em]">
             <Link to="/#services" className="hover:text-accent transition-colors py-1">Reviews</Link>
             <Link to="/work" className="hover:text-accent transition-colors py-1">Showcase</Link>
             <Link to="/#about" className="hover:text-accent transition-colors py-1">The Vision</Link>

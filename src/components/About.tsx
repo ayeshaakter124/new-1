@@ -65,7 +65,7 @@ export default function About() {
             
             {/* Experience Tag */}
             <div className="absolute -bottom-2 -right-2 sm:-bottom-5 sm:-right-5 glass p-2.5 sm:p-5 rounded-2xl sm:rounded-[32px] z-20 border border-accent/20 glow-md text-center sm:text-left shadow-xl">
-              <p className="text-lg sm:text-3xl font-display font-bold text-accent tracking-tighter leading-none">{yearsExp}</p>
+              <p className="text-xl sm:text-3xl font-mono font-extrabold text-accent tracking-tight leading-none">{yearsExp}</p>
               <p className="text-[7px] sm:text-[9px] font-bold text-text-soft uppercase tracking-[0.25em] sm:tracking-[0.3em] leading-tight mt-1 font-mono">Years Of<br className="hidden sm:block" /> Experience</p>
             </div>
           </motion.div>
@@ -76,13 +76,13 @@ export default function About() {
             viewport={{ once: true }}
             className="flex flex-col justify-center text-left"
           >
-            <p className="text-accent font-bold tracking-[0.4em] text-[9px] sm:text-[10px] mb-2 sm:mb-4 uppercase font-mono">
+            <p className="text-accent font-bold tracking-[0.35em] text-[9px] sm:text-[10px] mb-2 sm:mb-4 uppercase font-mono">
               {content.aboutBadge || "The Creative Narrative"}
             </p>
-            <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-medium mb-3 sm:mb-6 text-text-pure tracking-tighter leading-[1.1]">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-bold mb-3 sm:mb-6 text-text-pure tracking-[-0.02em] leading-[1.12]">
               {content.aboutHeading || "Mastering the Cinematic Art of Storytelling"}
             </h2>
-            <p className="text-xs sm:text-base md:text-lg text-text-soft mb-6 sm:mb-10 leading-relaxed font-light">
+            <p className="text-xs sm:text-base md:text-lg text-text-soft mb-6 sm:mb-10 leading-relaxed font-normal">
               {profile.fullBio || content.aboutDescription}
             </p>
             
@@ -125,11 +125,11 @@ export default function About() {
             {/* Quick Metrics */}
             <div className="mt-6 sm:mt-10 flex flex-wrap gap-6 sm:gap-10">
               <div>
-                <p className="text-xl sm:text-3xl font-display font-bold text-text-pure tracking-tighter text-glow">{projectsCount}</p>
+                <p className="text-xl sm:text-3xl md:text-4xl font-mono font-extrabold text-text-pure tracking-tight text-glow">{projectsCount}</p>
                 <p className="text-[8px] sm:text-[9px] text-text-muted uppercase font-bold tracking-[0.25em] mt-0.5 font-mono">Projects Done</p>
               </div>
               <div>
-                <p className="text-xl sm:text-3xl font-display font-bold text-text-pure tracking-tighter text-glow">{happyClientsCount}</p>
+                <p className="text-xl sm:text-3xl md:text-4xl font-mono font-extrabold text-text-pure tracking-tight text-glow">{happyClientsCount}</p>
                 <p className="text-[8px] sm:text-[9px] text-text-muted uppercase font-bold tracking-[0.25em] mt-0.5 font-mono">Happy Clients</p>
               </div>
             </div>

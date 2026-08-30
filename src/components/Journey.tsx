@@ -32,7 +32,7 @@ export default function Journey() {
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="text-accent font-bold tracking-[0.4em] text-[9px] sm:text-[10px] mb-2 sm:mb-3 uppercase font-mono"
+            className="text-accent font-bold tracking-[0.35em] text-[10px] sm:text-xs mb-2 sm:mb-3 uppercase font-mono"
           >
             {content.journeyBadge || "The Evolution"}
           </motion.p>
@@ -41,7 +41,7 @@ export default function Journey() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-2xl sm:text-4xl md:text-5xl font-display font-medium text-text-pure tracking-tighter leading-tight"
+            className="text-2xl sm:text-4xl md:text-5xl font-display font-bold text-text-pure tracking-[-0.02em] leading-tight"
           >
             {content.journeyHeading || "THE JOURNEY"}
           </motion.h2>
@@ -69,7 +69,7 @@ export default function Journey() {
               >
                 {/* Year - Desktop */}
                 <div className="hidden md:flex md:w-[12%] justify-end pr-8 pt-1">
-                  <span className="text-text-pure font-mono font-medium text-[10px] tracking-widest opacity-40 group-hover:opacity-100 transition-opacity">
+                  <span className="text-accent font-mono font-bold text-[11px] tracking-wider opacity-60 group-hover:opacity-100 transition-opacity">
                     {item.year.split(' – ')[0]}
                   </span>
                 </div>
@@ -90,7 +90,7 @@ export default function Journey() {
                     <p className="text-text-muted text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.2em] mb-2 sm:mb-4 font-mono">
                       {item.company}
                     </p>
-                    <p className="text-text-soft text-xs sm:text-sm md:text-base font-light leading-relaxed max-w-2xl opacity-80 group-hover:opacity-100 transition-opacity">
+                    <p className="text-text-soft text-xs sm:text-sm md:text-base font-normal leading-relaxed max-w-2xl opacity-80 group-hover:opacity-100 transition-opacity">
                       {item.description}
                     </p>
                   </div>

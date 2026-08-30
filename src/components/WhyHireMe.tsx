@@ -53,10 +53,10 @@ export default function WhyHireMe() {
             viewport={{ once: true }}
             className="text-left"
           >
-            <p className="text-accent font-bold tracking-[0.4em] text-[9px] sm:text-[10px] mb-2 sm:mb-3 uppercase font-mono">
+            <p className="text-accent font-bold tracking-[0.35em] text-[10px] sm:text-xs mb-2 sm:mb-3 uppercase font-mono">
               {content.whyHireBadge || "Distinctive Advantages"}
             </p>
-            <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-medium mb-5 sm:mb-8 leading-tight text-text-pure tracking-tighter">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-bold mb-5 sm:mb-8 leading-[1.12] text-text-pure tracking-[-0.02em]">
               {content.whyHireHeading || "I Don’t Just Edit, I Build Experiences"}
             </h2>
             <div className="space-y-4 sm:space-y-6">
@@ -65,7 +65,7 @@ export default function WhyHireMe() {
                   <div className="w-1 h-10 sm:h-12 bg-accent rounded-full shrink-0 glow-sm group-hover:h-14 transition-all duration-300 mt-1" />
                   <div>
                     <h3 className="text-base sm:text-lg font-display font-bold mb-1 text-text-pure tracking-tight">{item.title}</h3>
-                    <p className="text-text-soft text-xs sm:text-[13px] font-light leading-relaxed">{item.text}</p>
+                    <p className="text-text-soft text-xs sm:text-sm font-normal leading-relaxed">{item.text}</p>
                   </div>
                 </div>
               ))}
@@ -73,7 +73,7 @@ export default function WhyHireMe() {
             
             <Link 
               to="/#contact" 
-              className="inline-flex items-center mt-6 sm:mt-10 px-6 py-3 sm:px-8 sm:py-4 bg-accent hover:bg-accent-hover text-primary font-bold rounded-full transition-all group glow-md hover:glow-lg active:scale-95 uppercase tracking-widest text-[9px] sm:text-[10px] shadow-lg shadow-accent/20"
+              className="inline-flex items-center mt-6 sm:mt-10 px-6 py-3 sm:px-8 sm:py-4 bg-accent hover:bg-accent-hover text-primary font-mono font-bold rounded-full transition-all group glow-md hover:glow-lg active:scale-95 uppercase tracking-wider text-[9px] sm:text-[10px] shadow-lg shadow-accent/20"
             >
               Direct Contact <span className="inline-block group-hover:translate-x-1 transition-transform ml-2">→</span>
             </Link>
@@ -92,9 +92,9 @@ export default function WhyHireMe() {
                 >
                   <div className="absolute top-0 right-0 w-12 sm:w-16 h-12 sm:h-16 bg-panel/10 rounded-full -mr-3 -mt-3 blur-xl group-hover:bg-panel/20 transition-all duration-300" />
                   <Icon className="text-accent mb-2 sm:mb-3 group-hover:scale-110 transition-transform" size={18} />
-                  <h3 className="text-lg sm:text-2xl md:text-4xl font-display font-bold mb-0.5 text-text-pure tracking-tighter">{stat.value}</h3>
-                  <p className="text-[7px] sm:text-[9px] font-bold text-text-soft mb-1 uppercase tracking-widest font-mono">{stat.label}</p>
-                  <p className="text-[7px] sm:text-[9px] text-text-muted uppercase tracking-[0.15em] sm:tracking-[0.2em] font-medium leading-tight sm:leading-relaxed line-clamp-2">{stat.detail}</p>
+                  <h3 className="text-xl sm:text-3xl md:text-4xl font-mono font-extrabold mb-0.5 text-text-pure tracking-tight">{stat.value}</h3>
+                  <p className="text-[8px] sm:text-[10px] font-bold text-accent mb-1 uppercase tracking-wider font-mono">{stat.label}</p>
+                  <p className="text-[8px] sm:text-[10px] text-text-muted font-normal leading-relaxed line-clamp-2">{stat.detail}</p>
                 </motion.div>
               );
             })}

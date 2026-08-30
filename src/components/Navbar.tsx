@@ -81,8 +81,8 @@ export default function Navbar() {
             <div className="w-8 h-8 sm:w-10 sm:h-10 bg-accent rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform duration-300 glow-sm shadow-md shadow-accent/20">
               <Play className="text-secondary fill-secondary w-3.5 h-3.5 sm:w-4 sm:h-4 translate-x-0.5" />
             </div>
-            <span className="font-display font-medium text-base sm:text-xl tracking-tighter text-text-pure uppercase">
-              {firstName}<span className="text-accent font-light ml-1 sm:ml-2">{restName}</span>
+            <span className="font-display font-extrabold text-base sm:text-xl tracking-tight text-text-pure uppercase">
+              {firstName}<span className="text-accent font-semibold ml-1 sm:ml-2">{restName}</span>
             </span>
           </Link>
 
@@ -92,7 +92,7 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 to={link.href}
-                className={`text-[10px] font-bold uppercase tracking-[0.35em] transition-all relative group py-1 ${
+                className={`text-[10px] sm:text-[11px] font-mono font-bold uppercase tracking-[0.25em] transition-all relative group py-1 ${
                   location.pathname === link.href ? "text-accent" : "text-text-muted hover:text-accent"
                 }`}
               >
@@ -104,7 +104,7 @@ export default function Navbar() {
             ))}
             <Link 
               to="/#contact"
-              className="bg-accent hover:bg-accent-hover text-primary font-bold px-5 py-2.5 rounded-full text-[10px] uppercase tracking-widest transition-all duration-300 glow-sm hover:glow-md scale-100 hover:scale-105 active:scale-95 shadow-lg shadow-accent/20"
+              className="bg-accent hover:bg-accent-hover text-primary font-mono font-bold px-5 py-2.5 rounded-full text-[10px] uppercase tracking-wider transition-all duration-300 glow-sm hover:glow-md scale-100 hover:scale-105 active:scale-95 shadow-lg shadow-accent/20"
             >
               Get In Touch
             </Link>

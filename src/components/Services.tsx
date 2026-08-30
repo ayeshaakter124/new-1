@@ -46,7 +46,7 @@ export default function Services() {
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-accent font-bold tracking-[0.4em] text-[9px] sm:text-xs mb-2 sm:mb-4 uppercase font-mono"
+            className="text-accent font-bold tracking-[0.35em] text-[10px] sm:text-xs mb-2 sm:mb-3 uppercase font-mono"
           >
             {content.servicesBadge || "Voices of Impact"}
           </motion.p>
@@ -55,7 +55,7 @@ export default function Services() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-2xl sm:text-4xl md:text-6xl font-display font-medium text-text-pure tracking-tighter leading-tight"
+            className="text-2xl sm:text-4xl md:text-6xl font-display font-bold text-text-pure tracking-[-0.02em] leading-tight"
           >
             {content.servicesHeading || "Client Video Reviews"}
           </motion.h2>

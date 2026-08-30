@@ -47,10 +47,10 @@ export default function Portfolio() {
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-16 gap-5 sm:gap-8">
           <div>
-            <p className="text-accent font-bold tracking-[0.4em] text-[9px] sm:text-xs mb-2 sm:mb-4 uppercase font-mono">
+            <p className="text-accent font-bold tracking-[0.35em] text-[10px] sm:text-xs mb-2 sm:mb-3 uppercase font-mono">
               {content.portfolioBadge || "Selected Masterpieces"}
             </p>
-            <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-medium text-text-pure tracking-tighter leading-tight">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-display font-bold text-text-pure tracking-[-0.02em] leading-tight">
               {content.portfolioHeading || "Cinematic Showcase"}
             </h2>
           </div>
@@ -61,7 +61,7 @@ export default function Portfolio() {
               <button
                 key={cat}
                 onClick={() => setActiveTab(cat)}
-                className={`px-4 py-2 sm:px-6 sm:py-2.5 rounded-full text-[9px] sm:text-xs font-bold uppercase tracking-wider transition-all duration-300 border shrink-0 whitespace-nowrap active:scale-95 ${
+                className={`px-4 py-2 sm:px-6 sm:py-2.5 rounded-full text-[9px] sm:text-xs font-mono font-bold uppercase tracking-wider transition-all duration-300 border shrink-0 whitespace-nowrap active:scale-95 ${
                   activeTab === cat 
                     ? "bg-accent text-primary border-accent glow-sm shadow-md shadow-accent/25" 
                     : "bg-secondary/70 text-text-muted border-white/5 hover:border-accent/40"
