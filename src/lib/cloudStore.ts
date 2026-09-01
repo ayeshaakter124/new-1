@@ -28,9 +28,21 @@ const cleanUrl = (raw?: string) => {
 export const cloudStore = {
   getConfig(): CloudConfig {
     try {
+      const envUrl = cleanUrl(import.meta.env.VITE_SUPABASE_URL || "");
+      const envKey = (import.meta.env.VITE_SUPABASE_ANON_KEY || "").trim();
       const saved = localStorage.getItem(STORAGE_KEYS.CLOUD_CONFIG);
-      const conf = saved ? { ...DEFAULT_CLOUD_CONFIG, ...JSON.parse(saved) } : DEFAULT_CLOUD_CONFIG;
-      return { ...conf, supabaseUrl: cleanUrl(conf.supabaseUrl) };
+      const parsed = saved ? JSON.parse(saved) : {};
+
+      const supabaseUrl = cleanUrl(parsed.supabaseUrl) || envUrl;
+      const supabaseAnonKey = (parsed.supabaseAnonKey || "").trim() || envKey;
+      const autoSync = parsed.autoSync !== undefined ? parsed.autoSync : true;
+
+      return {
+        supabaseUrl,
+        supabaseAnonKey,
+        autoSync,
+        lastSyncedAt: parsed.lastSyncedAt,
+      };
     } catch {
       return DEFAULT_CLOUD_CONFIG;
     }
@@ -97,7 +109,7 @@ export const cloudStore = {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => {
       try { controller.abort(); } catch {}
-    }, 1500);
+    }, 6000);
 
     try {
       const res = await fetch(`${baseUrl}/rest/v1/portfolio_data?select=id,data`, {

@@ -14,10 +14,8 @@ export default function Footer() {
       setContent(cmsStore.getContent());
     };
     window.addEventListener("cms_data_updated", handleUpdate);
-    window.addEventListener("rh_data_updated", handleUpdate);
     return () => {
       window.removeEventListener("cms_data_updated", handleUpdate);
-      window.removeEventListener("rh_data_updated", handleUpdate);
     };
   }, []);
 
@@ -41,8 +39,9 @@ export default function Footer() {
 
           {/* Links */}
           <div className="flex flex-wrap justify-center gap-4 sm:gap-8 text-[8px] sm:text-[9px] font-mono font-bold text-text-muted uppercase tracking-[0.25em]">
-            <Link to="/#services" className="hover:text-accent transition-colors py-1">Reviews</Link>
+            <Link to="/#services" className="hover:text-accent transition-colors py-1">Services</Link>
             <Link to="/work" className="hover:text-accent transition-colors py-1">Showcase</Link>
+            <Link to="/#testimonials" className="hover:text-accent transition-colors py-1">Reviews</Link>
             <Link to="/#about" className="hover:text-accent transition-colors py-1">The Vision</Link>
             <Link to="/#contact" className="hover:text-accent transition-colors py-1">Connection</Link>
           </div>
@@ -61,7 +60,7 @@ export default function Footer() {
       </div>
       
       {/* Decorative Glow */}
-      <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-[600px] sm:w-[1000px] h-[200px] sm:h-[300px] bg-accent/5 blur-[100px] sm:blur-[120px] rounded-full pointer-events-none opacity-50" />
+      <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-[400px] sm:w-[600px] h-[120px] sm:h-[180px] bg-accent/5 blur-[50px] sm:blur-[70px] rounded-full pointer-events-none opacity-40" />
     </footer>
   );
 }

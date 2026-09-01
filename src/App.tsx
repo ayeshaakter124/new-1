@@ -12,6 +12,8 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import Services from "./components/Services";
 import Portfolio from "./components/Portfolio";
+import Testimonials from "./components/Testimonials";
+import Brands from "./components/Brands";
 import WhyHireMe from "./components/WhyHireMe";
 import Journey from "./components/Journey";
 import About from "./components/About";
@@ -32,21 +34,26 @@ function RouteLoadingFallback() {
 
 function CloudDataLoader() {
   useEffect(() => {
-    // Non-blocking background sync after initial page paint
-    const sync = () => {
-      cmsStore.loadFromCloud().then(() => {
-        const seo = cmsStore.getSeo();
-        if (seo?.siteTitle) {
-          document.title = seo.siteTitle;
+    let isMounted = true;
+    const sync = async () => {
+      try {
+        await cmsStore.loadFromCloud();
+        if (isMounted) {
+          const seo = cmsStore.getSeo();
+          if (seo?.siteTitle) {
+            document.title = seo.siteTitle;
+          }
         }
-      });
+      } catch (err) {
+        console.warn("Background cloud sync note:", err);
+      }
     };
 
-    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
-      (window as any).requestIdleCallback(sync);
-    } else {
-      setTimeout(sync, 200);
-    }
+    sync();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   return null;
@@ -62,13 +69,14 @@ function ScrollToTop() {
         const element = document.getElementById(targetId);
         if (element) {
           element.scrollIntoView({ behavior: "smooth" });
-          return true;
         }
-        return false;
       };
 
-      if (!scrollToTarget()) {
-        const timer = setTimeout(scrollToTarget, 100);
+      const element = document.getElementById(targetId);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      } else {
+        const timer = setTimeout(scrollToTarget, 150);
         return () => clearTimeout(timer);
       }
       return;
@@ -89,10 +97,8 @@ function DynamicHomeSections() {
       setSections(cmsStore.getSections().filter(s => s.visible).sort((a, b) => a.order - b.order));
     };
     window.addEventListener("cms_data_updated", handleUpdate);
-    window.addEventListener("rh_data_updated", handleUpdate);
     return () => {
       window.removeEventListener("cms_data_updated", handleUpdate);
-      window.removeEventListener("rh_data_updated", handleUpdate);
     };
   }, []);
 
@@ -100,10 +106,14 @@ function DynamicHomeSections() {
     switch (id) {
       case "hero":
         return <Hero key="hero" />;
-      case "portfolio":
-        return <Portfolio key="portfolio" />;
       case "services":
         return <Services key="services" />;
+      case "portfolio":
+        return <Portfolio key="portfolio" />;
+      case "testimonials":
+        return <Testimonials key="testimonials" />;
+      case "brands":
+        return <Brands key="brands" />;
       case "whyHire":
         return <WhyHireMe key="whyHire" />;
       case "journey":
@@ -122,47 +132,29 @@ function DynamicHomeSections() {
     : cmsStore.getSections();
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}
-    >
+    <div className="w-full">
       {displaySections.map((section) => renderSection(section.id))}
-    </motion.div>
+    </div>
   );
 }
 
 function AnimatedRoutes() {
-  const location = useLocation();
-
   return (
     <Suspense fallback={<RouteLoadingFallback />}>
-      <AnimatePresence mode="wait">
-        <Routes location={location}>
-          <Route
-            path="/"
-            element={<DynamicHomeSections />}
-          />
-          <Route
-            path="/work"
-            element={
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 1.05 }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <PortfolioPage />
-              </motion.div>
-            }
-          />
-          <Route
-            path="/admin/*"
-            element={<AdminRouter />}
-          />
-        </Routes>
-      </AnimatePresence>
+      <Routes>
+        <Route
+          path="/"
+          element={<DynamicHomeSections />}
+        />
+        <Route
+          path="/work"
+          element={<PortfolioPage />}
+        />
+        <Route
+          path="/admin/*"
+          element={<AdminRouter />}
+        />
+      </Routes>
     </Suspense>
   );
 }

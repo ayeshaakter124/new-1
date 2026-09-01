@@ -13,10 +13,10 @@ const getYouTubeId = (url: string) => {
   return match ? match[1] : null;
 };
 
-const categories = ["Reels", "Commercial", "Saas Animation", "Motion Graphics"];
+const BASE_CATEGORIES = ["All", "Reels", "Commercial", "Saas Animation", "Documentary", "Motion Graphics"];
 
 export default function Portfolio() {
-  const [activeTab, setActiveTab] = useState("Reels");
+  const [activeTab, setActiveTab] = useState("All");
   const [selectedVideo, setSelectedVideo] = useState<{ id: string, title: string } | null>(null);
   const [projectsList, setProjectsList] = useState<ProjectItem[]>(() => 
     cmsStore.getProjects().filter(p => p.published)
@@ -29,19 +29,28 @@ export default function Portfolio() {
       setContent(cmsStore.getContent());
     };
     window.addEventListener("cms_data_updated", handleUpdate);
-    window.addEventListener("rh_data_updated", handleUpdate);
     return () => {
       window.removeEventListener("cms_data_updated", handleUpdate);
-      window.removeEventListener("rh_data_updated", handleUpdate);
     };
   }, []);
 
-  const filteredProjects = projectsList.filter(p => p.category === activeTab);
+  // Compute unique categories from projects plus base categories
+  const categories = Array.from(
+    new Set([
+      "All",
+      ...BASE_CATEGORIES.slice(1),
+      ...projectsList.map(p => p.category).filter(Boolean)
+    ])
+  );
+
+  const filteredProjects = activeTab === "All"
+    ? projectsList
+    : projectsList.filter(p => p.category === activeTab);
 
   return (
     <section id="portfolio" className="py-16 sm:py-24 bg-primary relative overflow-hidden">
       {/* Ambient Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[800px] h-[350px] sm:h-[800px] bg-panel/5 rounded-full blur-[100px] sm:blur-[150px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] h-[300px] sm:h-[500px] bg-panel/5 rounded-full blur-[50px] sm:blur-[70px] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
@@ -76,10 +85,10 @@ export default function Portfolio() {
         {/* Gallery Grid */}
         <motion.div 
           layout
-          className={`grid gap-4 sm:gap-8 md:gap-10 ${
+          className={`grid gap-4 sm:gap-6 md:gap-8 ${
             activeTab === 'Reels' 
               ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4' 
-              : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+              : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
           }`}
         >
           <AnimatePresence mode="popLayout">

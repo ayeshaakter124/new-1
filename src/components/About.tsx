@@ -18,10 +18,8 @@ export default function About() {
       setStats(cmsStore.getStats());
     };
     window.addEventListener("cms_data_updated", handleUpdate);
-    window.addEventListener("rh_data_updated", handleUpdate);
     return () => {
       window.removeEventListener("cms_data_updated", handleUpdate);
-      window.removeEventListener("rh_data_updated", handleUpdate);
     };
   }, []);
 
@@ -38,7 +36,7 @@ export default function About() {
   return (
     <section id="about" className="py-16 sm:py-24 md:py-32 relative overflow-hidden bg-primary">
       {/* Background Glower */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-panel/5 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[600px] h-[350px] sm:h-[600px] bg-panel/5 rounded-full blur-[50px] sm:blur-[70px] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 items-center">
@@ -48,7 +46,7 @@ export default function About() {
             viewport={{ once: true, amount: 0.1 }}
             className="relative max-w-[280px] sm:max-w-sm mx-auto lg:max-w-none w-full"
           >
-            <div className="absolute inset-0 bg-accent/20 blur-[80px] sm:blur-[100px] rounded-full z-0 opacity-15 pointer-events-none" />
+            <div className="absolute inset-0 bg-accent/15 blur-[40px] sm:blur-[60px] rounded-full z-0 opacity-15 pointer-events-none" />
             <div className="relative z-10 aspect-[4/5] w-full min-h-[320px] sm:min-h-[420px] rounded-[24px] sm:rounded-[2rem] overflow-hidden border border-white/10 glass-dark bg-secondary/80 glow-lg group flex items-center justify-center">
               <img 
                 src={displayPortrait}
@@ -103,19 +101,25 @@ export default function About() {
                     style={{ backgroundColor: skill.glowColor || "rgba(163, 133, 96, 0.3)" }}
                   />
                   <div 
-                    className="w-5 h-5 sm:w-7 sm:h-7 bg-text-muted group-hover:bg-accent transition-all duration-300 relative z-10" 
-                    style={{
-                      maskImage: `url(${skill.logo})`,
-                      WebkitMaskImage: `url(${skill.logo})`,
-                      maskSize: 'contain',
-                      WebkitMaskSize: 'contain',
-                      maskRepeat: 'no-repeat',
-                      WebkitMaskRepeat: 'no-repeat',
-                      maskPosition: 'center',
-                      WebkitMaskPosition: 'center'
-                    }}
-                  />
-                  <span className="text-[7px] sm:text-[9px] font-bold text-text-muted group-hover:text-text-pure uppercase tracking-wider relative z-10 transition-colors text-center font-mono truncate max-w-full">
+                    className="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-white/5 border border-white/5 group-hover:border-accent/30 p-1.5 flex items-center justify-center relative z-10 transition-all duration-300 group-hover:scale-110 shadow-sm"
+                  >
+                    {skill.logo ? (
+                      <img 
+                        src={skill.logo} 
+                        alt={skill.name} 
+                        className="w-full h-full object-contain filter invert opacity-70 group-hover:opacity-100 transition-all duration-300"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = "none";
+                        }}
+                      />
+                    ) : (
+                      <span className="text-[10px] font-bold font-mono text-accent">
+                        {skill.name.slice(0, 2).toUpperCase()}
+                      </span>
+                    )}
+                  </div>
+                  <span className="text-[8px] sm:text-[9px] font-bold text-text-muted group-hover:text-text-pure uppercase tracking-wider relative z-10 transition-colors text-center font-mono truncate max-w-full">
                     {skill.name}
                   </span>
                 </motion.div>

@@ -35,9 +35,9 @@ export default function Hero() {
 
   return (
     <section id="home" className="relative min-h-[90vh] sm:min-h-screen flex items-center justify-center pt-24 sm:pt-32 pb-12 sm:pb-20 overflow-hidden bg-primary">
-      {/* Ambient Glows */}
-      <div className="absolute top-0 right-0 w-[300px] sm:w-[600px] h-[300px] sm:h-[600px] bg-panel/10 rounded-full blur-[100px] sm:blur-[150px] pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[800px] h-[350px] sm:h-[800px] bg-accent/5 rounded-full blur-[120px] sm:blur-[180px] pointer-events-none" />
+      {/* Ambient Glows - Optimized with radial gradients */}
+      <div className="absolute top-0 right-0 w-[260px] sm:w-[450px] h-[260px] sm:h-[450px] bg-panel/10 rounded-full blur-[50px] sm:blur-[70px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[550px] h-[300px] sm:h-[550px] bg-accent/5 rounded-full blur-[60px] sm:blur-[80px] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center relative z-10">
         <motion.div
@@ -154,10 +154,8 @@ export default function Hero() {
             </div>
             
             {/* Floating Desktop Stats */}
-            <motion.div 
-              animate={{ y: [0, -8, 0] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -right-4 sm:-right-8 top-1/4 z-20 glass p-3 sm:p-4 rounded-2xl glow-lg border border-white/20 hidden sm:block"
+            <div 
+              className="absolute -right-4 sm:-right-8 top-1/4 z-20 glass p-3 sm:p-4 rounded-2xl glow-md border border-white/20 hidden sm:block animate-bounce [animation-duration:6s]"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent">
@@ -168,12 +166,10 @@ export default function Hero() {
                   <p className="text-lg font-bold text-text-pure uppercase">{yearsExp} YEARS</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div 
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -left-4 sm:-left-8 bottom-1/4 z-20 glass p-3 sm:p-4 rounded-2xl glow-lg border border-white/20 hidden sm:block"
+            <div 
+              className="absolute -left-4 sm:-left-8 bottom-1/4 z-20 glass p-3 sm:p-4 rounded-2xl glow-md border border-white/20 hidden sm:block animate-bounce [animation-duration:7s]"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent">
@@ -184,7 +180,7 @@ export default function Hero() {
                   <p className="text-lg font-bold text-text-pure uppercase">{projectsCount} COMPLETED</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
 
           {/* Mobile-Only Stat Highlights Strip */}
@@ -199,29 +195,6 @@ export default function Hero() {
             </div>
           </div>
         </motion.div>
-      </div>
-      
-      {/* Subtle Floating Ambient Dots */}
-      <div className="absolute inset-0 pointer-events-none opacity-20">
-        {[1, 2, 3].map((i) => (
-          <motion.div
-            key={i}
-            animate={{ 
-              y: [0, -60, 0],
-              opacity: [0.2, 0.5, 0.2]
-            }}
-            transition={{ 
-              duration: Math.random() * 5 + 5,
-              repeat: Infinity,
-              delay: Math.random() * 2
-            }}
-            className="absolute bg-accent w-1 h-1 rounded-full"
-            style={{ 
-              left: `${i * 30}%`,
-              top: `${i * 25}%`
-            }}
-          />
-        ))}
       </div>
     </section>
   );

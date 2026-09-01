@@ -614,8 +614,8 @@ export const DEFAULT_CMS_STATE: CMSState = {
     portfolioHeading: "Cinematic Showcase",
     portfolioSubtitle: "Explore high-octane commercial edits, retention-engineered reels, and motion designs.",
 
-    servicesBadge: "Voices of Impact",
-    servicesHeading: "Client Video Reviews",
+    servicesBadge: "Elite Capabilities",
+    servicesHeading: "Creative Solutions & Production Packages",
 
     whyHireBadge: "Distinctive Advantages",
     whyHireHeading: "I Don’t Just Edit, I Build Experiences",
@@ -628,8 +628,8 @@ export const DEFAULT_CMS_STATE: CMSState = {
     journeyBadge: "The Evolution",
     journeyHeading: "THE JOURNEY",
 
-    testimonialsBadge: "Elite Endorsements",
-    testimonialsHeading: "Testimonials of Excellence",
+    testimonialsBadge: "Voices of Impact",
+    testimonialsHeading: "Client Reviews & Testimonials",
 
     contactBadge: "The Final Frontier",
     contactHeading: "Let's Compose Your Masterpiece",
@@ -641,12 +641,14 @@ export const DEFAULT_CMS_STATE: CMSState = {
 
   sections: [
     { id: "hero", name: "Hero / Introduction", visible: true, order: 1 },
-    { id: "portfolio", name: "Portfolio Showcase", visible: true, order: 2 },
-    { id: "services", name: "Client Video Reviews", visible: true, order: 3 },
-    { id: "whyHire", name: "Why Hire Me / Key Stats", visible: true, order: 4 },
-    { id: "journey", name: "Career Journey Timeline", visible: true, order: 5 },
-    { id: "about", name: "About Me & Narrative", visible: true, order: 6 },
-    { id: "contact", name: "Contact & Connection", visible: true, order: 7 },
+    { id: "services", name: "Services & Capabilities", visible: true, order: 2 },
+    { id: "portfolio", name: "Portfolio Showcase", visible: true, order: 3 },
+    { id: "testimonials", name: "Client Reviews & Testimonials", visible: true, order: 4 },
+    { id: "brands", name: "Tools & Brand Partners", visible: true, order: 5 },
+    { id: "whyHire", name: "Why Hire Me / Key Stats", visible: true, order: 6 },
+    { id: "journey", name: "Career Journey Timeline", visible: true, order: 7 },
+    { id: "about", name: "About Me & Narrative", visible: true, order: 8 },
+    { id: "contact", name: "Contact & Connection", visible: true, order: 9 },
   ],
 
   seo: {
@@ -693,7 +695,6 @@ export const DEFAULT_CMS_STATE: CMSState = {
 
 const notifyUpdate = () => {
   window.dispatchEvent(new Event("cms_data_updated"));
-  window.dispatchEvent(new Event("rh_data_updated")); // Backward compatibility
 };
 
 export const cmsStore = {
@@ -722,6 +723,18 @@ export const cmsStore = {
   saveProfile(data: Partial<ProfileHeroData>): ProfileHeroData {
     const current = this.getProfile();
     const updated = { ...current, ...data };
+    
+    // Two-way sync contact channels to contactInfo
+    if (data.email !== undefined || data.phone !== undefined || data.whatsapp !== undefined) {
+      const contact = this.getContactInfo();
+      this.set("contactInfo", {
+        ...contact,
+        ...(data.email !== undefined && { email: data.email }),
+        ...(data.phone !== undefined && { phone: data.phone }),
+        ...(data.whatsapp !== undefined && { whatsapp: data.whatsapp }),
+      });
+    }
+    
     return this.set("profile", updated);
   },
 
@@ -1034,6 +1047,18 @@ export const cmsStore = {
   saveContactInfo(data: Partial<ContactInfo>): ContactInfo {
     const current = this.getContactInfo();
     const updated = { ...current, ...data };
+    
+    // Two-way sync contact channels to profile
+    if (data.email !== undefined || data.phone !== undefined || data.whatsapp !== undefined) {
+      const prof = this.getProfile();
+      this.set("profile", {
+        ...prof,
+        ...(data.email !== undefined && { email: data.email }),
+        ...(data.phone !== undefined && { phone: data.phone }),
+        ...(data.whatsapp !== undefined && { whatsapp: data.whatsapp }),
+      });
+    }
+    
     return this.set("contactInfo", updated);
   },
 
@@ -1055,7 +1080,7 @@ export const cmsStore = {
     const map = new Map<string, SectionConfig>();
     if (Array.isArray(raw) && raw.length > 0) {
       raw
-        .filter((s) => s && s.id && s.id !== "brands" && s.id !== "testimonials")
+        .filter((s) => s && s.id)
         .forEach((s) => map.set(s.id, s));
     }
     
@@ -1082,7 +1107,7 @@ export const cmsStore = {
     return merged.sort((a, b) => a.order - b.order);
   },
   saveSections(sections: SectionConfig[]): SectionConfig[] {
-    const cleaned = sections.filter((s) => s.id !== ("brands" as any) && s.id !== ("testimonials" as any));
+    const cleaned = sections.filter((s) => Boolean(s && s.id));
     return this.set("sections", cleaned);
   },
   toggleSectionVisibility(id: string): SectionConfig[] {
@@ -1163,9 +1188,8 @@ export const cmsStore = {
 
     keys.forEach(k => {
       if (bundle[k] !== undefined && bundle[k] !== null) {
-        // Validate array keys to ensure they are not corrupted or empty unless intended
         if (Array.isArray(DEFAULT_CMS_STATE[k])) {
-          if (Array.isArray(bundle[k]) && bundle[k].length > 0) {
+          if (Array.isArray(bundle[k])) {
             localStorage.setItem(`${CMS_STORAGE_PREFIX}${k}`, JSON.stringify(bundle[k]));
           }
         } else if (typeof DEFAULT_CMS_STATE[k] === "object") {

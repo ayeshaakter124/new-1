@@ -9,8 +9,9 @@ const navLinks = [
   { name: "Home", href: "/", number: "01" },
   { name: "Services", href: "/#services", number: "02" },
   { name: "Work", href: "/work", number: "03" },
-  { name: "About", href: "/#about", number: "04" },
-  { name: "Contact", href: "/#contact", number: "05" },
+  { name: "Reviews", href: "/#testimonials", number: "04" },
+  { name: "About", href: "/#about", number: "05" },
+  { name: "Contact", href: "/#contact", number: "06" },
 ];
 
 export default function Navbar() {
@@ -26,18 +27,23 @@ export default function Navbar() {
       setContactInfo(cmsStore.getContactInfo());
     };
     window.addEventListener("cms_data_updated", handleUpdate);
-    window.addEventListener("rh_data_updated", handleUpdate);
     return () => {
       window.removeEventListener("cms_data_updated", handleUpdate);
-      window.removeEventListener("rh_data_updated", handleUpdate);
     };
   }, []);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 30);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 30);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -132,8 +138,8 @@ export default function Navbar() {
             className="fixed inset-0 z-40 md:hidden bg-primary/98 backdrop-blur-2xl flex flex-col justify-between p-6 pt-24 overflow-y-auto"
           >
             {/* Ambient Background Light */}
-            <div className="absolute top-1/4 right-0 w-72 h-72 bg-accent/10 rounded-full blur-[100px] pointer-events-none" />
-            <div className="absolute bottom-10 left-0 w-64 h-64 bg-panel/15 rounded-full blur-[90px] pointer-events-none" />
+            <div className="absolute top-1/4 right-0 w-60 h-60 bg-accent/10 rounded-full blur-[40px] pointer-events-none" />
+            <div className="absolute bottom-10 left-0 w-56 h-56 bg-panel/15 rounded-full blur-[40px] pointer-events-none" />
 
             {/* Navigation Links */}
             <div className="flex flex-col gap-3 my-auto relative z-10">

@@ -13,10 +13,10 @@ const getYouTubeId = (url: string) => {
   return match ? match[1] : null;
 };
 
-const categories = ["Reels", "Commercial", "Saas Animation", "Documentary", "Motion Graphics"];
+const BASE_CATEGORIES = ["All", "Reels", "Commercial", "Saas Animation", "Documentary", "Motion Graphics"];
 
 export default function PortfolioPage() {
-  const [activeCategory, setActiveCategory] = useState("Reels");
+  const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedVideo, setSelectedVideo] = useState<{ id: string, title: string } | null>(null);
   const [videoProjects, setVideoProjects] = useState<ProjectItem[]>(() => 
@@ -28,17 +28,25 @@ export default function PortfolioPage() {
       setVideoProjects(cmsStore.getProjects().filter(p => p.published));
     };
     window.addEventListener("cms_data_updated", handleUpdate);
-    window.addEventListener("rh_data_updated", handleUpdate);
     return () => {
       window.removeEventListener("cms_data_updated", handleUpdate);
-      window.removeEventListener("rh_data_updated", handleUpdate);
     };
   }, []);
 
+  // Compute unique categories from projects plus base categories
+  const categories = Array.from(
+    new Set([
+      "All",
+      ...BASE_CATEGORIES.slice(1),
+      ...videoProjects.map(p => p.category).filter(Boolean)
+    ])
+  );
+
   const filteredVideos = useMemo(() => {
     return videoProjects.filter((video) => {
-      const matchesCategory = video.category === activeCategory;
-      const matchesSearch = video.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      const matchesCategory = activeCategory === "All" || video.category === activeCategory;
+      const matchesSearch = !searchQuery.trim() || 
+                            video.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                             video.description.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
@@ -48,8 +56,8 @@ export default function PortfolioPage() {
     <div className="min-h-screen bg-primary pt-24 sm:pt-32 pb-16 sm:pb-24 text-text-pure">
       {/* Background Decor */}
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none overflow-hidden -z-10">
-        <div className="absolute top-1/4 -left-1/4 w-[350px] sm:w-[600px] h-[350px] sm:h-[600px] bg-accent/5 rounded-full blur-[100px] sm:blur-[150px]" />
-        <div className="absolute bottom-1/4 -right-1/4 w-[350px] sm:w-[600px] h-[350px] sm:h-[600px] bg-panel/5 rounded-full blur-[100px] sm:blur-[150px]" />
+        <div className="absolute top-1/4 -left-1/4 w-[300px] sm:w-[450px] h-[300px] sm:h-[450px] bg-accent/5 rounded-full blur-[50px] sm:blur-[70px]" />
+        <div className="absolute bottom-1/4 -right-1/4 w-[300px] sm:w-[450px] h-[300px] sm:h-[450px] bg-panel/5 rounded-full blur-[50px] sm:blur-[70px]" />
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -104,10 +112,10 @@ export default function PortfolioPage() {
         {/* Gallery Grid */}
         <motion.div 
           layout
-          className={`grid gap-4 sm:gap-8 ${
+          className={`grid gap-4 sm:gap-6 md:gap-8 ${
             activeCategory === 'Reels' 
               ? 'grid-cols-2 md:grid-cols-3 lg:grid-cols-4' 
-              : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+              : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
           }`}
         >
           <AnimatePresence mode="popLayout">

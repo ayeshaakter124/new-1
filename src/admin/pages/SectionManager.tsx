@@ -37,14 +37,16 @@ export function SectionManager({ onAddToast }: SectionManagerProps) {
   };
 
   const handleResetDefaults = () => {
-    const defaultSections = [
+    const defaultSections: SectionConfig[] = [
       { id: "hero", name: "Hero / Introduction", visible: true, order: 1 },
-      { id: "portfolio", name: "Portfolio Showcase", visible: true, order: 2 },
-      { id: "services", name: "Client Video Reviews", visible: true, order: 3 },
-      { id: "whyHire", name: "Why Hire Me / Key Stats", visible: true, order: 4 },
-      { id: "journey", name: "Career Journey Timeline", visible: true, order: 5 },
-      { id: "about", name: "About Me & Narrative", visible: true, order: 6 },
-      { id: "contact", name: "Contact & Connection", visible: true, order: 7 },
+      { id: "services", name: "Services & Capabilities", visible: true, order: 2 },
+      { id: "portfolio", name: "Portfolio Showcase", visible: true, order: 3 },
+      { id: "testimonials", name: "Client Reviews & Testimonials", visible: true, order: 4 },
+      { id: "brands", name: "Tools & Brand Partners", visible: true, order: 5 },
+      { id: "whyHire", name: "Why Hire Me / Key Stats", visible: true, order: 6 },
+      { id: "journey", name: "Career Journey Timeline", visible: true, order: 7 },
+      { id: "about", name: "About Me & Narrative", visible: true, order: 8 },
+      { id: "contact", name: "Contact & Connection", visible: true, order: 9 },
     ];
     setSections(defaultSections);
     cmsStore.saveSections(defaultSections);

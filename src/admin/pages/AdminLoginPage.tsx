@@ -38,8 +38,8 @@ export function AdminLoginPage({ onLoginSuccess }: AdminLoginPageProps) {
   return (
     <div className="min-h-screen bg-primary flex items-center justify-center px-6 py-12 text-text-pure relative overflow-hidden">
       {/* Ambient Burgundy/Gold Backlights */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/10 rounded-full blur-[160px] pointer-events-none" />
-      <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-panel/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] sm:w-[500px] h-[350px] sm:h-[500px] bg-accent/10 rounded-full blur-[60px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-[250px] sm:w-[350px] h-[250px] sm:h-[350px] bg-panel/10 rounded-full blur-[50px] pointer-events-none" />
 
       <div className="max-w-md w-full bg-secondary/80 backdrop-blur-2xl p-8 sm:p-10 rounded-[36px] border border-accent/20 shadow-2xl relative z-10">
         {/* Header */}

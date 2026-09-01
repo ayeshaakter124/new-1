@@ -26,10 +26,8 @@ export default function WhyHireMe() {
       setContent(cmsStore.getContent());
     };
     window.addEventListener("cms_data_updated", handleUpdate);
-    window.addEventListener("rh_data_updated", handleUpdate);
     return () => {
       window.removeEventListener("cms_data_updated", handleUpdate);
-      window.removeEventListener("rh_data_updated", handleUpdate);
     };
   }, []);
 
@@ -43,7 +41,7 @@ export default function WhyHireMe() {
   return (
     <section id="why-hire" className="py-16 sm:py-24 bg-primary relative overflow-hidden">
       {/* Background Glower */}
-      <div className="absolute top-1/2 right-0 w-[300px] sm:w-[400px] h-[300px] sm:h-[400px] bg-panel/10 rounded-full blur-[90px] sm:blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/2 right-0 w-[240px] sm:w-[350px] h-[240px] sm:h-[350px] bg-panel/10 rounded-full blur-[50px] sm:blur-[70px] pointer-events-none" />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 items-center">
